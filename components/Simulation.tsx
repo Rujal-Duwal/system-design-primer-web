@@ -119,6 +119,17 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
     setRunning(false);
   };
 
+  /** Anything bought or chosen beyond the level's starting point. */
+  const hasBuilt =
+    build.servers !== freshBuild.servers ||
+    build.lb !== freshBuild.lb ||
+    build.cache !== freshBuild.cache ||
+    build.queue !== freshBuild.queue ||
+    build.shards !== freshBuild.shards ||
+    build.hashing !== freshBuild.hashing ||
+    build.replicas !== freshBuild.replicas ||
+    build.mode !== freshBuild.mode;
+
   const debriefRef = NAV_BY_KEY[level.ref];
   const nextLevel = index < (LEVELS as Level[]).length - 1 ? (LEVELS as Level[])[index + 1] : null;
   const hasPassed = !!passed[index];
@@ -197,8 +208,21 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
             <button type="button" className={styles.primaryButton} onClick={toggleRun}>
               {running ? "pause" : verdict ? "run again" : "run traffic"}
             </button>
+            {/* Two different scopes, so they say which one they are. "reset
+                run" clears the meters and keeps what you built; "start over"
+                also refunds it. Without the second one here, the only way to
+                undo a purchase was to fail and use the verdict card. */}
             <button type="button" className={styles.ghostButton} onClick={reset}>
-              reset
+              reset run
+            </button>
+            <button
+              type="button"
+              className={styles.ghostButton}
+              onClick={startOver}
+              disabled={running || !hasBuilt}
+              title={hasBuilt ? "Refund everything and start from the default system" : "Nothing bought yet"}
+            >
+              start over
             </button>
             <div className={styles.meters}>
               <Meter label="served" value={String(stats.done)} />
@@ -257,8 +281,8 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
               </div>
               <p className={styles.modeHint}>
                 {build.mode === "cp"
-                  ? "CP — the cut-off side refuses to answer. No stale reads, and its share of the traffic lands on the majority."
-                  : "AP — every replica keeps answering. Nothing errors, but the cut-off side has stopped receiving writes."}
+                  ? "CP — the cut-off side refuses to answer, so no read is ever out of date. Its share of the traffic lands on the majority, which needs the capacity to take it."
+                  : "AP — every replica keeps answering, so nothing errors. But the cut-off side has stopped receiving writes, so some of what it returns is behind. Those count against the stale meter."}
               </p>
             </div>
           )}

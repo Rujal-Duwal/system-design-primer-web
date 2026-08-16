@@ -149,6 +149,20 @@ try {
   // One server ($100) plus the balancer just bought ($80).
   check("spend updated after purchase", (await page.getByText("$180 / $400").count()) > 0);
 
+  // The two resets have different scopes, and the labels have to keep saying
+  // which is which — "reset" alone read as broken because it left the build
+  // untouched and nothing visibly changed.
+  await page.getByRole("button", { name: "reset run" }).click();
+  await page.waitForTimeout(300);
+  check("reset run keeps what you built", (await page.getByText("$180 / $400").count()) > 0);
+  check(
+    "reset run clears the meters",
+    /Ready to run/.test(await page.locator('p[aria-live="polite"]').first().innerText())
+  );
+  await page.getByRole("button", { name: "start over" }).first().click();
+  await page.waitForTimeout(300);
+  check("start over refunds the build", (await page.getByText("$100 / $400").count()) > 0);
+
   /* --- hot shard -------------------------------------------------------- */
   console.log("\nhot shard");
   await page.goto(`${BASE}/simulate/hot-shard/`, { waitUntil: "networkidle" });
@@ -172,6 +186,21 @@ try {
   const capLive = await page.locator('p[aria-live="polite"]').first().innerText();
   const staleCount = Number(capLive.match(/(\d+) stale reads/)?.[1] ?? 0);
   check("AP produces stale reads after the split", staleCount > 0, capLive.slice(0, 90));
+
+  // Buying hardware can never rescue AP here, so the verdict has to say so and
+  // name the way out. Without that it reads as an unwinnable level.
+  await page.waitForTimeout(7000);
+  const capVerdict = await page
+    .locator("p")
+    .filter({ hasText: /reads came back from the cut-off side/ })
+    .first()
+    .innerText()
+    .catch(() => "");
+  check(
+    "stale verdict names the way out",
+    /stay consistent/i.test(capVerdict) && /no number of replicas/i.test(capVerdict),
+    capVerdict.slice(0, 70)
+  );
 
   /* --- ask overlay ------------------------------------------------------ */
   console.log("\nask overlay");

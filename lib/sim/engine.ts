@@ -653,7 +653,9 @@ export class SimEngine {
       text = `Over budget at $${spend}. Capacity solves most things; the exercise is solving it for less.`;
     } else if (!staleOk) {
       reason = "stale";
-      text = `${this.stale} reads came back from the cut-off side and may have been out of date. Nothing errored — that is the trade you took. This system cannot accept it.`;
+      // Naming the corrective action matters more here than anywhere else,
+      // because this is the one failure that buying more hardware cannot fix.
+      text = `${this.stale} reads came back from the cut-off side and may have been out of date. Nothing errored — that is the trade you took, and no number of replicas changes it. If this ledger cannot serve a stale read, the cut-off side has to stop answering: choose "stay consistent", and buy enough capacity for the majority to carry the whole load alone.`;
     } else if (errRate > L.goal.maxErr) {
       reason = "errors";
       text = `${errRate.toFixed(1)}% of requests were dropped — the bottleneck filled its queue and started refusing work. Read the meters: whichever node sat at full capacity is the one to fix.`;
