@@ -87,4 +87,13 @@ Don't add the disclaimer back to the tagline, meta description or OG card. It wa
 
 ## Deployment
 
-Pushes to `main` deploy via the Vercel GitHub integration. Do not deploy with `vercel --prod` from a laptop; that bypasses CI and makes the deployed commit ambiguous.
+Pushes to `main` deploy via the Vercel GitHub integration, and the custom domain
+follows the new production deployment automatically. Do not deploy with
+`vercel --prod` from a laptop; that bypasses CI and makes the deployed commit
+ambiguous.
+
+The Vercel project is `system-design-primer-web`, matching the repo. It has
+exactly one domain — `system-design-primer.rujalduwal.com.np`. If a
+`*.vercel.app` alias ever reappears in the project's domains, it will be
+re-aliased on every deploy and give the site a second public URL; remove it from
+the **project domains**, not with `vercel alias rm`, which does not stick.
