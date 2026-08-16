@@ -149,9 +149,26 @@ try {
   // One server ($100) plus the balancer just bought ($80).
   check("spend updated after purchase", (await page.getByText("$180 / $400").count()) > 0);
 
+  // Controls only appear once they can do something. Buying already reset the
+  // run, so there is nothing left to reset.
+  check(
+    "reset run hidden when no run has started",
+    (await page.getByRole("button", { name: "reset run" }).count()) === 0
+  );
+  check(
+    "start over shown once something is bought",
+    (await page.getByRole("button", { name: "start over" }).count()) > 0
+  );
+
   // The two resets have different scopes, and the labels have to keep saying
   // which is which — "reset" alone read as broken because it left the build
   // untouched and nothing visibly changed.
+  await page.getByRole("button", { name: "run traffic" }).click();
+  await page.waitForTimeout(1200);
+  check(
+    "reset run appears once a run has started",
+    (await page.getByRole("button", { name: "reset run" }).count()) === 1
+  );
   await page.getByRole("button", { name: "reset run" }).click();
   await page.waitForTimeout(300);
   check("reset run keeps what you built", (await page.getByText("$180 / $400").count()) > 0);
@@ -162,6 +179,10 @@ try {
   await page.getByRole("button", { name: "start over" }).first().click();
   await page.waitForTimeout(300);
   check("start over refunds the build", (await page.getByText("$100 / $400").count()) > 0);
+  check(
+    "start over hidden once nothing is bought",
+    (await page.getByRole("button", { name: "start over" }).count()) === 0
+  );
 
   /* --- hot shard -------------------------------------------------------- */
   console.log("\nhot shard");
@@ -202,13 +223,41 @@ try {
     capVerdict.slice(0, 70)
   );
 
+  /* --- verdict is dismissible ------------------------------------------- */
+  // After a run you may want neither button: just to look at what you built.
+  console.log("\nverdict");
+  await page.goto(`${BASE}/simulate/one-box/`, { waitUntil: "networkidle" });
+  await page.getByRole("button", { name: "run traffic" }).click();
+  await page.waitForTimeout(18000);
+  check("verdict card appears", (await page.getByText(/objective (met|missed)/).count()) > 0);
+  await page.getByRole("button", { name: "inspect the system" }).click();
+  await page.waitForTimeout(300);
+  check(
+    "verdict card dismisses",
+    (await page.locator('[class*="verdictCard"]').count()) === 0
+  );
+  check(
+    "result stays reachable after dismissing",
+    (await page.getByRole("button", { name: /read it again/ }).count()) === 1
+  );
+  await page.getByRole("button", { name: /read it again/ }).click();
+  await page.waitForTimeout(250);
+  check("verdict can be reopened", (await page.locator('[class*="verdictCard"]').count()) === 1);
+
   /* --- ask overlay ------------------------------------------------------ */
   console.log("\nask overlay");
   await page.goto(`${BASE}/reference/cache/`, { waitUntil: "networkidle" });
   await page.keyboard.press("/");
   await page.waitForTimeout(300);
-  check("slash opens the overlay", (await page.getByPlaceholder("ask anything in the primer").count()) === 1);
-  await page.getByPlaceholder("ask anything in the primer").fill("sharding");
+  check("slash opens the overlay", (await page.getByLabel(/search for|your question/i).count()) === 1);
+  // The composer has to read as a field, not a heading.
+  check("dialog is titled", (await page.getByRole("heading", { name: "ask the primer" }).count()) === 1);
+  check("close button offered, not just esc", (await page.getByRole("button", { name: /close/i }).count()) >= 1);
+  check("example queries offered", (await page.getByRole("button", { name: "cache invalidation" }).count()) === 1);
+  await page.getByRole("button", { name: "cache invalidation" }).click();
+  await page.waitForTimeout(500);
+  check("clicking an example fills the field", (await page.getByLabel(/search for/i).inputValue()) === "cache invalidation");
+  await page.getByLabel(/search for/i).fill("sharding");
   await page.waitForTimeout(600);
   const hitCount = await page.locator('[role="dialog"] button').filter({ hasText: /./ }).count();
   check("search returns hits for 'sharding'", hitCount > 3, `${hitCount} interactive results`);
@@ -219,24 +268,34 @@ try {
   await page.waitForTimeout(200);
   await page.keyboard.press("Escape");
   await page.waitForTimeout(200);
-  check("escape closes the overlay", (await page.getByPlaceholder("ask anything in the primer").count()) === 0);
+  check("escape closes the overlay", (await page.getByRole("heading", { name: "ask the primer" }).count()) === 0);
 
   /* --- theme ------------------------------------------------------------ */
-  // Playwright emulates prefers-color-scheme: light, and with nothing stored
-  // the site follows the OS. So the starting theme is read, not assumed.
+  // Three states now: auto / light / dark, defaulting to auto. Playwright
+  // emulates prefers-color-scheme: light, so auto should resolve to light.
   console.log("\ntheme");
-  const started = await page.getAttribute("html", "data-sdp-theme");
-  check("follows OS preference when nothing is stored", started === "light", started);
+  const startTheme = await page.getAttribute("html", "data-sdp-theme");
+  check("auto follows the OS when nothing is stored", startTheme === "light", startTheme);
+  check(
+    "auto is the selected option by default",
+    (await page.getByRole("button", { name: "auto" }).getAttribute("aria-pressed")) === "true"
+  );
 
-  const other = started === "dark" ? "light" : "dark";
-  await page.getByRole("button", { name: `Switch to ${other} theme` }).click();
+  await page.getByRole("button", { name: "dark", exact: true }).click();
   await page.waitForTimeout(150);
-  check(`toggles to ${other}`, (await page.getAttribute("html", "data-sdp-theme")) === other);
+  check("explicit dark applies", (await page.getAttribute("html", "data-sdp-theme")) === "dark");
 
   await page.reload({ waitUntil: "networkidle" });
-  check(`${other} survives reload`, (await page.getAttribute("html", "data-sdp-theme")) === other);
+  check("explicit dark survives reload", (await page.getAttribute("html", "data-sdp-theme")) === "dark");
   const flashed = await page.evaluate(() => document.documentElement.dataset.sdpTheme);
-  check("no theme flash on load", flashed === other, flashed);
+  check("no theme flash on load", flashed === "dark", flashed);
+
+  // The point of a third state: you can get back to following the OS.
+  await page.getByRole("button", { name: "auto" }).click();
+  await page.waitForTimeout(200);
+  check("auto returns to the OS preference", (await page.getAttribute("html", "data-sdp-theme")) === "light");
+  await page.reload({ waitUntil: "networkidle" });
+  check("auto persists as the default", (await page.getAttribute("html", "data-sdp-theme")) === "light");
 
   /* --- mobile ----------------------------------------------------------- */
   console.log("\nmobile (375px)");

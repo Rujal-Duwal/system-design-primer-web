@@ -21,10 +21,15 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
   const [verdict, setVerdict] = useState<Verdict | null>(null);
   const [running, setRunning] = useState(false);
   const [description, setDescription] = useState("");
+  /** Has a run begun? Distinct from `running`, which is false while paused. */
+  const [started, setStarted] = useState(false);
+  /** The verdict can be dismissed to study the system that produced it. */
+  const [verdictOpen, setVerdictOpen] = useState(false);
 
   const handleFinish = useCallback(
     (v: Verdict) => {
       setVerdict(v);
+      setVerdictOpen(true);
       setRunning(false);
       if (v.passed) markPassed(index);
     },
@@ -75,7 +80,9 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
     // You cannot change the system mid-flight; any change resets the run.
     engineRef.current?.setBuild(next);
     setVerdict(null);
+    setVerdictOpen(false);
     setRunning(false);
+    setStarted(false);
     setDescription(engineRef.current?.describe() ?? "");
   };
 
@@ -101,22 +108,28 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
     if (verdict) {
       engine.reset();
       setVerdict(null);
+      setVerdictOpen(false);
     }
     engine.start();
     setRunning(true);
+    setStarted(true);
   };
 
   const reset = () => {
     engineRef.current?.reset();
     setVerdict(null);
+    setVerdictOpen(false);
     setRunning(false);
+    setStarted(false);
   };
 
   const startOver = () => {
     resetBuild(index);
     engineRef.current?.setBuild(freshBuild);
     setVerdict(null);
+    setVerdictOpen(false);
     setRunning(false);
+    setStarted(false);
   };
 
   /** Anything bought or chosen beyond the level's starting point. */
@@ -173,9 +186,25 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
                   : "Ready to run."}
             </p>
 
-            {verdict && (
+            {/* Dismissed, but not forgotten: a quiet strip keeps the result
+                reachable while you study the system that produced it. */}
+            {verdict && !verdictOpen && (
+              <button
+                type="button"
+                className={`${styles.verdictPeek} ${verdict.passed ? "" : styles.verdictPeekFailed}`}
+                onClick={() => setVerdictOpen(true)}
+              >
+                {verdict.passed ? "objective met" : "objective missed"} — read it again
+              </button>
+            )}
+
+            {verdict && verdictOpen && (
               <div
                 className={`${styles.verdict} ${verdict.passed ? styles.verdictPassed : styles.verdictFailed}`}
+                onMouseDown={(e) => {
+                  // Clicking the wash dismisses, like any other overlay.
+                  if (e.target === e.currentTarget) setVerdictOpen(false);
+                }}
               >
                 <div
                   className={`${styles.verdictCard} ${verdict.passed ? "" : styles.verdictCardFailed}`}
@@ -189,6 +218,15 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
                   <div className={styles.verdictActions}>
                     <button type="button" className={styles.ghostButton} onClick={toggleRun}>
                       run again
+                    </button>
+                    {/* Neither run again nor start over: just look at what you
+                        built and what it did. */}
+                    <button
+                      type="button"
+                      className={styles.ghostButton}
+                      onClick={() => setVerdictOpen(false)}
+                    >
+                      inspect the system
                     </button>
                     {!verdict.passed && (
                       <button type="button" className={styles.ghostButton} onClick={startOver}>
@@ -212,20 +250,25 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
             </button>
             {/* Two different scopes, so they say which one they are. "reset
                 run" clears the meters and keeps what you built; "start over"
-                also refunds it. Without the second one here, the only way to
-                undo a purchase was to fail and use the verdict card. */}
-            <button type="button" className={styles.ghostButton} onClick={reset}>
-              reset run
-            </button>
-            <button
-              type="button"
-              className={styles.ghostButton}
-              onClick={startOver}
-              disabled={running || !hasBuilt}
-              title={hasBuilt ? "Refund everything and start from the default system" : "Nothing bought yet"}
-            >
-              start over
-            </button>
+                also refunds it. Neither appears before it can do anything —
+                there is nothing to reset until a run has begun, and nothing to
+                refund until something is bought. */}
+            {started && (
+              <button type="button" className={styles.ghostButton} onClick={reset}>
+                reset run
+              </button>
+            )}
+            {hasBuilt && (
+              <button
+                type="button"
+                className={styles.ghostButton}
+                onClick={startOver}
+                disabled={running}
+                title="Refund everything and start from the default system"
+              >
+                start over
+              </button>
+            )}
             <div className={styles.meters}>
               <Meter label="served" value={String(stats.done)} />
               <Meter label="dropped" value={String(stats.err)} bad={stats.err > 0} />

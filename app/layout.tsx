@@ -64,9 +64,13 @@ export const viewport: Viewport = {
 const THEME_BOOTSTRAP = `
 (function () {
   try {
-    var t = localStorage.getItem("sdp-theme");
-    if (!t) t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-    document.documentElement.setAttribute("data-sdp-theme", t);
+    // "system" is the default and is stored as the absence of a choice, so a
+    // reader who never touches the toggle keeps following their OS forever.
+    var choice = localStorage.getItem("sdp-theme");
+    var resolved = (choice === "light" || choice === "dark")
+      ? choice
+      : (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    document.documentElement.setAttribute("data-sdp-theme", resolved);
   } catch (e) {
     document.documentElement.setAttribute("data-sdp-theme", "dark");
   }

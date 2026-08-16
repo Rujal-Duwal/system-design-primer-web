@@ -74,20 +74,36 @@
   line-height: 1.5;
 }
 
-.themeToggle {
-  font-size: 9px;
+/* auto / light / dark, as one segmented control. */
+.themeGroup {
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.themeOption {
+  font-family: var(--mono);
+  font-size: 8.5px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 5px 7px;
+  /* 24px minimum target (WCAG 2.5.8). */
+  min-height: 24px;
+  padding: 4px 6px;
   border: 1px solid var(--control-line);
+  border-left: 0;
   background: var(--panel2);
   color: var(--dim);
   cursor: pointer;
-  flex: 0 0 auto;
 }
-.themeToggle:hover {
+.themeOption:first-child {
+  border-left: 1px solid var(--control-line);
+}
+.themeOption:hover {
   color: var(--accent);
+}
+.themeOptionActive {
+  background: var(--accent-bg);
   border-color: var(--accent-line);
+  color: var(--accent);
 }
 
 .groupLabel {

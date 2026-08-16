@@ -11,6 +11,14 @@ import type { MLCEngineInterface } from "@mlc-ai/web-llm";
 type Mode = "find" | "explain";
 type ModelState = "idle" | "loading" | "ready" | "error";
 
+/** Real queries, so an empty field is never the only thing on offer. */
+const FIND_EXAMPLES = ["cache invalidation", "sharding", "back pressure", "CAP"];
+const EXPLAIN_EXAMPLES = [
+  "when should I shard instead of federating?",
+  "why does a queue lower p99?",
+  "what does a cache actually cost me?",
+];
+
 export function AskOverlay({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -87,13 +95,9 @@ export function AskOverlay({ onClose }: { onClose: () => void }) {
     }
   }, [query]);
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Escape") {
-      onClose();
-      return;
-    }
-    if (e.key !== "Enter") return;
-    e.preventDefault();
+  /** What Enter and the submit button both do. */
+  const submit = useCallback(() => {
+    if (!query.trim()) return;
     if (mode === "explain" && model === "ready") {
       void ask();
       return;
@@ -102,6 +106,16 @@ export function AskOverlay({ onClose }: { onClose: () => void }) {
       router.push(hrefFor(hits[0].doc));
       onClose();
     }
+  }, [query, mode, model, ask, hits, router, onClose]);
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      onClose();
+      return;
+    }
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    submit();
   };
 
   const go = (href: string) => {
@@ -133,25 +147,18 @@ export function AskOverlay({ onClose }: { onClose: () => void }) {
       }}
     >
       <div className={styles.panel}>
-        <div className={styles.queryRow}>
-          <span className={styles.prompt} aria-hidden="true">
-            ?
-          </span>
-          <input
-            ref={inputRef}
-            type="text"
-            className={styles.input}
-            placeholder="ask anything in the primer"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={onKeyDown}
-            aria-label="Search the primer"
-          />
-          <button type="button" className={styles.esc} onClick={onClose}>
-            esc
+        {/* A titled dialog bar. Without it the input was the topmost thing in
+            the panel and read as a heading rather than a field. */}
+        <div className={styles.titleBar}>
+          <h2 className={styles.title}>ask the primer</h2>
+          <button type="button" className={styles.close} onClick={onClose}>
+            close <kbd className={styles.kbd}>esc</kbd>
           </button>
         </div>
 
+        {/* Mode before the field: decide what kind of answer you want, then
+            write the question. The other order made the tabs look like they
+            were filtering results that did not exist yet. */}
         <div className={styles.modeRow}>
           <div className={styles.tabs} role="group" aria-label="Answer mode">
             <button
@@ -177,6 +184,59 @@ export function AskOverlay({ onClose }: { onClose: () => void }) {
           >
             {modelStatus}
           </span>
+        </div>
+
+        {/* The composer. A visible box with a label and a submit button, so
+            there is no question about where the typing goes. */}
+        <div className={styles.composer}>
+          <label className={styles.composerLabel} htmlFor="ask-input">
+            {mode === "explain" ? "your question" : "search for"}
+          </label>
+          <div className={styles.field}>
+            <input
+              id="ask-input"
+              ref={inputRef}
+              type="text"
+              className={styles.input}
+              placeholder={
+                mode === "explain"
+                  ? "e.g. when should I shard instead of federating?"
+                  : "e.g. cache invalidation"
+              }
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={onKeyDown}
+            />
+            <button
+              type="button"
+              className={styles.submit}
+              onClick={submit}
+              disabled={!query.trim() || (mode === "explain" && model !== "ready")}
+            >
+              {mode === "explain" ? "ask" : "open"} <span aria-hidden="true">⏎</span>
+            </button>
+          </div>
+
+          {/* A blank field is the hardest thing to answer. These are real
+              queries, one click away. */}
+          {!query.trim() && (
+            <div className={styles.examples}>
+              <span className={styles.examplesLabel}>try</span>
+              {(mode === "explain" ? EXPLAIN_EXAMPLES : FIND_EXAMPLES).map((ex) => (
+                <button
+                  key={ex}
+                  type="button"
+                  className={styles.example}
+                  onClick={() => {
+                    setQuery(ex);
+                    inputRef.current?.focus();
+                  }}
+                >
+                  {ex}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {showGate && (
@@ -212,12 +272,6 @@ export function AskOverlay({ onClose }: { onClose: () => void }) {
         <div className={styles.results}>
           {mode === "explain" && model === "ready" && (
             <div className={styles.answerWrap}>
-              {!answer && !thinking && (
-                <p className={styles.hint}>
-                  Ask a question and press Enter. Answers come from the sections below it,
-                  never from the model&rsquo;s own memory.
-                </p>
-              )}
               {thinking && !answer && <p className={styles.hint}>reading the primer…</p>}
               {answer && (
                 <>
@@ -265,13 +319,17 @@ export function AskOverlay({ onClose }: { onClose: () => void }) {
               ))}
             </div>
           ) : (
-            <p className={styles.empty}>
-              {!indexReady
-                ? "loading the index…"
-                : query.trim()
-                  ? "Nothing in the primer matches that. Try a component name — cache, shard, queue, replica — or a symptom, like “tail latency”."
-                  : "Type to search 20 reference sections and 7 exercises. Enter opens the top result."}
-            </p>
+            /* With nothing typed in explain mode the composer's examples are
+               the instruction; a line about searching would contradict them. */
+            (query.trim() || mode === "find") && (
+              <p className={styles.empty}>
+                {!indexReady
+                  ? "loading the index…"
+                  : query.trim()
+                    ? "Nothing in the primer matches that. Try a component name — cache, shard, queue, replica — or a symptom, like “tail latency”."
+                    : "Searching 20 reference sections and 7 exercises."}
+              </p>
+            )
           )}
         </div>
 

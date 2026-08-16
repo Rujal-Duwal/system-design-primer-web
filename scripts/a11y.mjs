@@ -163,10 +163,18 @@ try {
   /* ---- 2.1.1 keyboard reach on the simulation -------------------------- */
   await page.goto(`${BASE}/simulate/cap-partition/`, { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
-  // Buy something first: "start over" is correctly disabled — and so correctly
-  // not focusable — until there is a build to discard.
+  // Controls that cannot do anything yet are deliberately absent: "start over"
+  // until something is bought, "reset run" until a run has begun. Put the page
+  // into the state where all of them exist before checking they are reachable.
+  // Run then pause: starting the run makes "reset run" exist, and pausing
+  // re-enables the controls that are deliberately locked mid-flight, so every
+  // control is present and operable at once.
   await page.getByRole("button", { name: /another replica/ }).click();
   await page.waitForTimeout(250);
+  await page.getByRole("button", { name: "run traffic" }).click();
+  await page.waitForTimeout(900);
+  await page.getByRole("button", { name: "pause" }).click();
+  await page.waitForTimeout(300);
   const reached = new Set();
   for (let i = 0; i < 60; i++) {
     await page.keyboard.press("Tab");

@@ -38,6 +38,15 @@ function ShellInner({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        // Only consume Escape when it actually closes something. Where the
+        // page itself is fullscreen (the Fullscreen API), preventing the
+        // default keeps it fullscreen while still closing the overlay.
+        //
+        // This cannot help when the *browser window* is fullscreen — Safari's
+        // green button, or F11 — because that is handled above the page and no
+        // script can intercept it. Which is why closing never depends on
+        // Escape: there is a close button, and clicking outside works too.
+        if (askOpen || drawerOpen) e.preventDefault();
         setAskOpen(false);
         setDrawerOpen(false);
         return;
@@ -50,7 +59,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [setAskOpen]);
+  }, [setAskOpen, askOpen, drawerOpen]);
 
   return (
     <div className={styles.shell}>
@@ -101,7 +110,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
 }
 
 function Sidebar({ open }: { open: boolean }) {
-  const { passed, theme, toggleTheme, setAskOpen } = useApp();
+  const { passed, theme, themeChoice, setThemeChoice, setAskOpen } = useApp();
   const [query, setQuery] = useState("");
   const pathname = usePathname();
 
@@ -138,14 +147,28 @@ function Sidebar({ open }: { open: boolean }) {
           </Link>
           <div className={styles.tagline}>run it, don&rsquo;t just read it</div>
         </div>
-        <button
-          type="button"
-          className={styles.themeToggle}
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-        >
-          {theme === "dark" ? "light" : "dark"}
-        </button>
+        {/* Three states, not two. Without an explicit "system" a reader who
+            once tapped the toggle could never get back to following their OS. */}
+        <div className={styles.themeGroup} role="group" aria-label="Theme">
+          {(["system", "light", "dark"] as const).map((choice) => (
+            <button
+              key={choice}
+              type="button"
+              className={`${styles.themeOption} ${
+                themeChoice === choice ? styles.themeOptionActive : ""
+              }`}
+              onClick={() => setThemeChoice(choice)}
+              aria-pressed={themeChoice === choice}
+              title={
+                choice === "system"
+                  ? `Follow the system (currently ${theme})`
+                  : `Always ${choice}`
+              }
+            >
+              {choice === "system" ? "auto" : choice}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className={styles.groupLabel}>simulations</div>

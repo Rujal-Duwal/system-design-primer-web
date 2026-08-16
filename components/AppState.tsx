@@ -6,7 +6,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 
@@ -36,9 +35,14 @@ type AppState = {
   askOpen: boolean;
   setAskOpen: (open: boolean) => void;
 
+  /** What the reader chose. "system" means follow the OS, and is the default. */
+  themeChoice: ThemeChoice;
+  /** What that currently resolves to, for labelling. */
   theme: "dark" | "light";
-  toggleTheme: () => void;
+  setThemeChoice: (choice: ThemeChoice) => void;
 };
+
+export type ThemeChoice = "system" | "light" | "dark";
 
 const Ctx = createContext<AppState | null>(null);
 
@@ -52,23 +56,44 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   const [passed, setPassed] = useState<Record<number, boolean>>({});
   const [builds, setBuilds] = useState<Record<number, Build>>({});
   const [askOpen, setAskOpen] = useState(false);
+  const [themeChoice, setChoice] = useState<ThemeChoice>("system");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const hydrated = useRef(false);
+  const [hydrated, setHydrated] = useState(false);
 
   // Read persisted state after mount. The theme attribute itself is already
   // applied by the bootstrap script in the document head; this only syncs the
   // React copy so the toggle label is right.
   useEffect(() => {
-    hydrated.current = true;
     try {
       const t = document.documentElement.getAttribute("data-sdp-theme");
       if (t === "light" || t === "dark") setTheme(t);
+      const stored = localStorage.getItem("sdp-theme");
+      if (stored === "light" || stored === "dark") setChoice(stored);
       const raw = localStorage.getItem("sdp-passed");
       if (raw) setPassed(JSON.parse(raw));
     } catch {
       /* private mode, or storage disabled — progress just will not persist */
     }
+    // Only now is `themeChoice` trustworthy. Until this runs it still holds its
+    // initial "system", and the effect below would apply the OS theme over a
+    // stored choice the bootstrap script had already applied correctly.
+    setHydrated(true);
   }, []);
+
+  // While following the system, track it live rather than only at load. Someone
+  // on a schedule that flips at sunset should see the site flip with it.
+  useEffect(() => {
+    if (!hydrated || themeChoice !== "system") return;
+    const mq = window.matchMedia("(prefers-color-scheme: light)");
+    const apply = () => {
+      const next = mq.matches ? "light" : "dark";
+      document.documentElement.setAttribute("data-sdp-theme", next);
+      setTheme(next);
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [hydrated, themeChoice]);
 
   const markPassed = useCallback((level: number) => {
     setPassed((prev) => {
@@ -96,17 +121,19 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     setBuilds((prev) => ({ ...prev, [level]: FRESH_BUILD }));
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-sdp-theme", next);
-      try {
-        localStorage.setItem("sdp-theme", next);
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
+  const setThemeChoice = useCallback((choice: ThemeChoice) => {
+    setChoice(choice);
+    try {
+      // Following the system is stored as no preference at all, so it stays
+      // the default rather than becoming a third remembered value.
+      if (choice === "system") localStorage.removeItem("sdp-theme");
+      else localStorage.setItem("sdp-theme", choice);
+    } catch {
+      /* ignore */
+    }
+    if (choice === "system") return; // the matchMedia effect applies it
+    document.documentElement.setAttribute("data-sdp-theme", choice);
+    setTheme(choice);
   }, []);
 
   const value = useMemo(
@@ -119,10 +146,11 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       freshBuild: FRESH_BUILD,
       askOpen,
       setAskOpen,
+      themeChoice,
       theme,
-      toggleTheme,
+      setThemeChoice,
     }),
-    [passed, markPassed, buildFor, setBuild, resetBuild, askOpen, theme, toggleTheme]
+    [passed, markPassed, buildFor, setBuild, resetBuild, askOpen, themeChoice, theme, setThemeChoice]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

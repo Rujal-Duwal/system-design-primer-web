@@ -137,6 +137,34 @@
   flex-wrap: wrap;
 }
 
+/* Shown once the verdict card is dismissed, so the result stays one click
+   away while the canvas underneath is free to study. */
+.verdictPeek {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  min-height: 24px;
+  padding: 6px 12px;
+  border: 1px solid var(--accent-line);
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+}
+.verdictPeek:hover {
+  border-color: var(--accent);
+}
+.verdictPeekFailed {
+  border-color: var(--bad);
+  background: var(--panel2);
+  color: var(--bad);
+}
+
 .meterBar {
   border-top: 1px solid var(--line);
   background: var(--panel2);
