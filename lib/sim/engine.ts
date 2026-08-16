@@ -36,6 +36,10 @@ export type SimNode = {
   qcap: number;
   alive: boolean;
   stage: number;
+  /** Index within its stage, for key-based shard routing. */
+  slot: number;
+  /** Cut off from the majority by a partition. */
+  isolated: boolean;
 };
 
 type ReqState = "transit" | "service" | "queued" | "exiting" | "done" | "error";
@@ -51,17 +55,35 @@ type Req = {
   write: boolean;
   svcLeft: number;
   fade: number;
+  /** Which row this request wants. Decides the shard it routes to. */
+  key: number;
+  /** Served by a replica cut off from the majority, so possibly behind. */
+  stale: boolean;
 };
 
 export type Verdict = {
   passed: boolean;
-  reason: "budget" | "errors" | "latency" | null;
+  reason: "budget" | "stale" | "errors" | "latency" | null;
   text: string;
   stats: Stats;
   spend: number;
 };
 
 type Colors = Record<string, string>;
+
+/** Size of the pretend keyspace requests are drawn from. */
+const KEYSPACE = 10000;
+
+/** Cheap integer scramble, standing in for a real hash function. */
+function hash32(key: number): number {
+  let x = key | 0;
+  x = (x ^ 61) ^ (x >>> 16);
+  x = x + (x << 3);
+  x = x ^ (x >>> 4);
+  x = Math.imul(x, 0x27d4eb2d);
+  x = x ^ (x >>> 15);
+  return Math.abs(x);
+}
 
 export class SimEngine {
   private canvas: HTMLCanvasElement | null = null;
@@ -79,8 +101,10 @@ export class SimEngine {
   private metricAcc = 0;
   private lats: number[] = [];
   private killed = false;
+  private partitioned = false;
   private done = 0;
   private err = 0;
+  private stale = 0;
 
   private srcX = 62;
   private exitX = 760;
@@ -146,15 +170,17 @@ export class SimEngine {
     this.metricAcc = 0;
     this.lats = [];
     this.killed = false;
+    this.partitioned = false;
     this.done = 0;
     this.err = 0;
+    this.stale = 0;
     this.running = false;
     this.buildTopology();
     this.onMetrics(this.emptyStats());
   }
 
   private emptyStats(): Stats {
-    return { done: 0, err: 0, errRate: 0, p99: 0, inflight: 0, rps: this.level.rate };
+    return { done: 0, err: 0, errRate: 0, p99: 0, inflight: 0, rps: this.level.rate, stale: 0 };
   }
 
   private loop(now: number) {
@@ -189,6 +215,7 @@ export class SimEngine {
       kind, label, cap, svc, hit,
       w: 0, h: 0, x: 0, y: 0, cx: 0, cy: 0,
       inFlight: 0, queue: 0, qcap: 14, alive: true, stage: 0,
+      slot: 0, isolated: false,
     });
 
     if (b.lb) stages.push([mk("lb", "balancer", 400, 3)]);
@@ -201,7 +228,24 @@ export class SimEngine {
 
     if (b.cache) stages.push([mk("cache", "cache", 500, 3, 0.86)]);
     if (b.queue) stages.push([mk("queue", "queue", 600, 6)]);
-    stages.push([mk("db", "database", L.dbCap, L.dbSvc)]);
+
+    // The data tier is one box, a set of shards, or a set of replicas,
+    // depending on what the level is teaching.
+    if (L.shards) {
+      const db: SimNode[] = [];
+      for (let i = 0; i < b.shards; i++) {
+        db.push(mk("db", `shard ${i + 1}`, L.dbCap, L.dbSvc));
+      }
+      stages.push(db);
+    } else if (L.replicated) {
+      const db: SimNode[] = [];
+      for (let i = 0; i < b.replicas; i++) {
+        db.push(mk("db", `replica ${i + 1}`, L.dbCap, L.dbSvc));
+      }
+      stages.push(db);
+    } else {
+      stages.push([mk("db", "database", L.dbCap, L.dbSvc)]);
+    }
 
     const w = this.w;
     const h = this.h;
@@ -224,6 +268,7 @@ export class SimEngine {
         node.cx = node.x + nw / 2;
         node.cy = node.y + nh / 2;
         node.stage = si;
+        node.slot = ni;
       });
     });
 
@@ -237,12 +282,17 @@ export class SimEngine {
 
   spend(): number {
     const b = this.build;
-    return (
+    const L = this.level;
+    let total =
       b.servers * COSTS.server +
       (b.lb ? COSTS.lb : 0) +
       (b.cache ? COSTS.cache : 0) +
-      (b.queue ? COSTS.queue : 0)
-    );
+      (b.queue ? COSTS.queue : 0);
+    // Only charge for the data tier the level actually uses; the first unit is
+    // what you start with, so it is not free but it is not optional either.
+    if (L.shards) total += b.shards * COSTS.shard + (b.hashing ? COSTS.hashing : 0);
+    if (L.replicated) total += b.replicas * COSTS.replica;
+    return total;
   }
 
   private spawn() {
@@ -257,20 +307,95 @@ export class SimEngine {
       write: isWrite,
       svcLeft: 0,
       fade: 1,
+      key: this.drawKey(),
+      stale: false,
     });
   }
 
-  private pickNode(stageIdx: number): SimNode | null {
+  /**
+   * Which row a request wants.
+   *
+   * Real traffic is not uniform — a minority of rows get most of the reads.
+   * `skew` is the share of requests that land in the hot range, which is what
+   * makes one shard run hot while its neighbours idle.
+   */
+  private drawKey(): number {
+    const s = this.level.shards;
+    if (!s) return 0;
+    const hot = Math.random() * 100 < s.skew;
+    // The hot range is a tenth of the keyspace; the rest is spread evenly.
+    return hot
+      ? Math.floor(Math.random() * (KEYSPACE / 10))
+      : Math.floor(Math.random() * KEYSPACE);
+  }
+
+  /**
+   * Where a request goes at a given stage.
+   *
+   * Three routing rules, each one a lesson:
+   *   app tier without a balancer  -> everything piles onto the first box
+   *   sharded data tier            -> by key, so skew concentrates on one shard
+   *   otherwise                    -> round robin
+   */
+  private pickNode(stageIdx: number, req: Req): SimNode | null {
     const stage = this.stages[stageIdx];
     if (!stage) return null;
     const alive = stage.filter((n) => n.alive);
     if (!alive.length) return null;
-    // Without a balancer, everything piles onto the first box. That is the
-    // entire lesson of level 01: extra servers sit idle until something routes.
+
     if (stage[0].kind === "app" && !this.build.lb) return alive[0];
+
+    if (stage[0].kind === "db" && this.level.shards) {
+      // Naive placement maps contiguous key ranges to shards, so a hot range
+      // sits entirely on one of them. Consistent hashing scatters the same
+      // keys across every shard, which is the whole point of it.
+      const idx = this.build.hashing
+        ? hash32(req.key) % alive.length
+        : Math.min(alive.length - 1, Math.floor((req.key / KEYSPACE) * alive.length));
+      return alive[idx];
+    }
+
+    if (stage[0].kind === "db" && this.level.replicated) {
+      return this.pickReplica(stage, alive, req);
+    }
+
     const next = ((this.rr.get(stage) ?? 0) + 1) % alive.length;
     this.rr.set(stage, next);
     return alive[next];
+  }
+
+  /**
+   * Replica choice once the network has split.
+   *
+   * Before a partition, any replica will do. After one, this is the CAP trade
+   * made concrete: under CP the isolated side refuses to answer, so its share
+   * of the traffic has to be absorbed by the majority. Under AP it answers
+   * anyway, and what it returns may be behind.
+   */
+  private pickReplica(stage: SimNode[], alive: SimNode[], req: Req): SimNode | null {
+    // The round-robin counter is keyed on `stage`, which is stable for the
+    // life of the topology. Keying it on a filtered array would silently
+    // reset the counter on every call, because that array is rebuilt each time.
+    const rotate = (pool: SimNode[]): SimNode | null => {
+      if (!pool.length) return null;
+      const next = ((this.rr.get(stage) ?? 0) + 1) % pool.length;
+      this.rr.set(stage, next);
+      return pool[next];
+    };
+
+    if (!this.partitioned) return rotate(alive);
+
+    if (this.build.mode === "cp") {
+      // Consistency: only the majority may serve. Availability is what pays,
+      // and the majority now carries the traffic the other side was taking.
+      return rotate(alive.filter((n) => !n.isolated));
+    }
+
+    // Availability: every replica keeps serving, and the isolated side has
+    // stopped receiving writes, so its reads are behind.
+    const node = rotate(alive);
+    if (node?.isolated && !req.write) req.stale = true;
+    return node;
   }
 
   private advance(req: Req) {
@@ -288,7 +413,7 @@ export class SimEngine {
       req.node = null;
       return;
     }
-    const node = this.pickNode(next);
+    const node = this.pickNode(next, req);
     if (!node) {
       this.fail(req);
       return;
@@ -304,6 +429,46 @@ export class SimEngine {
     this.err++;
   }
 
+  /** A host dies and takes its in-flight work with it. */
+  private killAppHost() {
+    const appStage = this.stages.find((s) => s[0].kind === "app");
+    const alive = appStage?.filter((n) => n.alive) ?? [];
+    if (!alive.length) return;
+    const victim = alive[0];
+    victim.alive = false;
+    victim.inFlight = 0;
+    victim.queue = 0;
+    for (const r of this.reqs) {
+      if (r.node === victim && r.st !== "exiting") this.fail(r);
+    }
+  }
+
+  /**
+   * The network splits the data tier.
+   *
+   * The minority side stays up and healthy — it simply cannot see the others.
+   * That is what makes this different from a dead host, and why the reader has
+   * a choice to make rather than just capacity to buy.
+   */
+  private partition() {
+    this.partitioned = true;
+    const dbStage = this.stages.find((s) => s[0].kind === "db");
+    if (!dbStage) return;
+    const alive = dbStage.filter((n) => n.alive);
+    // Minority is the smaller half; with two replicas it is one of the two.
+    const minorityFrom = Math.ceil(alive.length / 2);
+    alive.forEach((n, i) => {
+      n.isolated = i >= minorityFrom;
+    });
+    // Under CP the isolated side stops answering, so anything already in
+    // flight there is lost. Under AP it keeps serving.
+    if (this.build.mode === "cp") {
+      for (const r of this.reqs) {
+        if (r.node?.isolated && r.st !== "exiting") this.fail(r);
+      }
+    }
+  }
+
   private step(dt: number) {
     const L = this.level;
     this.elapsed += dt;
@@ -313,20 +478,10 @@ export class SimEngine {
       this.spawnAcc -= 1;
     }
 
-    // The chaos event: a host dies and takes its in-flight work with it.
     if (L.chaos && !this.killed && this.elapsed >= L.chaos.at) {
       this.killed = true;
-      const appStage = this.stages.find((s) => s[0].kind === "app");
-      const alive = appStage?.filter((n) => n.alive) ?? [];
-      if (alive.length) {
-        const victim = alive[0];
-        victim.alive = false;
-        victim.inFlight = 0;
-        victim.queue = 0;
-        for (const r of this.reqs) {
-          if (r.node === victim && r.st !== "exiting") this.fail(r);
-        }
-      }
+      if (L.chaos.kind === "partition") this.partition();
+      else this.killAppHost();
     }
 
     const speed = PX_PER_MS;
@@ -344,6 +499,7 @@ export class SimEngine {
         if (req.x >= this.exitX) {
           req.st = "done";
           this.done++;
+          if (req.stale) this.stale++;
           this.lats.push(req.lat);
         }
         continue;
@@ -459,6 +615,7 @@ export class SimEngine {
       p99: this.percentile99(),
       inflight: this.reqs.filter((r) => r.st !== "error").length,
       rps: this.level.rate,
+      stale: this.stale,
     };
   }
 
@@ -477,9 +634,13 @@ export class SimEngine {
       p99,
       inflight: 0,
       rps: L.rate,
+      stale: this.stale,
     };
 
-    const passed = errRate <= L.goal.maxErr && p99 <= L.goal.maxP99 && spend <= L.budget;
+    const maxStale = L.goal.maxStale;
+    const staleOk = maxStale === undefined || this.stale <= maxStale;
+    const passed =
+      errRate <= L.goal.maxErr && p99 <= L.goal.maxP99 && spend <= L.budget && staleOk;
 
     // Order matters: each failure gets its own sentence naming the real number,
     // and budget is checked first because it invalidates the run outright.
@@ -490,6 +651,9 @@ export class SimEngine {
     } else if (spend > L.budget) {
       reason = "budget";
       text = `Over budget at $${spend}. Capacity solves most things; the exercise is solving it for less.`;
+    } else if (!staleOk) {
+      reason = "stale";
+      text = `${this.stale} reads came back from the cut-off side and may have been out of date. Nothing errored — that is the trade you took. This system cannot accept it.`;
     } else if (errRate > L.goal.maxErr) {
       reason = "errors";
       text = `${errRate.toFixed(1)}% of requests were dropped — the bottleneck filled its queue and started refusing work. Read the meters: whichever node sat at full capacity is the one to fix.`;
@@ -588,15 +752,18 @@ export class SimEngine {
 
       ctx.fillStyle = C.panel2;
       ctx.fillRect(n.x, n.y, n.w, n.h);
-      ctx.strokeStyle = !n.alive ? C.bad : hot ? C.warn : C.line;
-      if (!n.alive) ctx.setLineDash([3, 3]);
+      // An isolated replica is healthy but unreachable, so it reads as warning
+      // rather than failure — the distinction is the whole lesson.
+      ctx.strokeStyle = !n.alive ? C.bad : n.isolated ? C.warn : hot ? C.warn : C.line;
+      if (!n.alive || n.isolated) ctx.setLineDash([3, 3]);
       ctx.strokeRect(n.x + 0.5, n.y + 0.5, n.w - 1, n.h - 1);
       ctx.setLineDash([]);
 
-      ctx.fillStyle = !n.alive ? C.bad : C.fg;
+      ctx.fillStyle = !n.alive ? C.bad : n.isolated ? C.warn : C.fg;
       ctx.textAlign = "left";
       ctx.font = this.font("500 10.5px");
-      ctx.fillText(!n.alive ? "DOWN" : n.label, n.x + 10, n.y + 18);
+      const label = !n.alive ? "DOWN" : n.isolated ? `${n.label} · cut off` : n.label;
+      ctx.fillText(label, n.x + 10, n.y + 18);
 
       ctx.font = this.font("400 9px");
       ctx.fillStyle = C.dim;

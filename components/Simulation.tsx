@@ -9,10 +9,10 @@ import { SimEngine, type Verdict } from "@/lib/sim/engine";
 import { COSTS, LEVELS, NAV_BY_KEY, TOOL_META } from "@/content/nav";
 import type { Build, Level, Stats, ToolKey } from "@/lib/types";
 
-const EMPTY: Stats = { done: 0, err: 0, errRate: 0, p99: 0, inflight: 0, rps: 0 };
+const EMPTY: Stats = { done: 0, err: 0, errRate: 0, p99: 0, inflight: 0, rps: 0, stale: 0 };
 
 export function Simulation({ level, index }: { level: Level; index: number }) {
-  const { passed, markPassed, buildFor, setBuild, resetBuild } = useApp();
+  const { passed, markPassed, buildFor, setBuild, resetBuild, freshBuild } = useApp();
   const build = buildFor(index);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -53,24 +53,42 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [level, handleFinish]);
 
+  // Mirrors SimEngine.spend(): only the data tier the level uses is charged.
   const spend =
     build.servers * COSTS.server +
     (build.lb ? COSTS.lb : 0) +
     (build.cache ? COSTS.cache : 0) +
-    (build.queue ? COSTS.queue : 0);
+    (build.queue ? COSTS.queue : 0) +
+    (level.shards ? build.shards * COSTS.shard + (build.hashing ? COSTS.hashing : 0) : 0) +
+    (level.replicated ? build.replicas * COSTS.replica : 0);
   const overBudget = spend > level.budget;
 
-  const buy = (tool: ToolKey) => {
-    const next: Build = { ...build };
-    if (tool === "server") next.servers += 1;
-    else next[tool] = true;
+  /** Parts you can own more than one of. */
+  const countOf = (tool: ToolKey): number | null =>
+    tool === "server" ? build.servers
+      : tool === "shard" ? build.shards
+      : tool === "replica" ? build.replicas
+      : null;
+
+  const apply = (next: Build) => {
     setBuild(index, next);
-    // You cannot change the system mid-flight; buying resets the run.
+    // You cannot change the system mid-flight; any change resets the run.
     engineRef.current?.setBuild(next);
     setVerdict(null);
     setRunning(false);
     setDescription(engineRef.current?.describe() ?? "");
   };
+
+  const buy = (tool: ToolKey) => {
+    const next: Build = { ...build };
+    if (tool === "server") next.servers += 1;
+    else if (tool === "shard") next.shards += 1;
+    else if (tool === "replica") next.replicas += 1;
+    else next[tool] = true;
+    apply(next);
+  };
+
+  const setMode = (mode: Build["mode"]) => apply({ ...build, mode });
 
   const toggleRun = () => {
     const engine = engineRef.current;
@@ -96,7 +114,7 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
 
   const startOver = () => {
     resetBuild(index);
-    engineRef.current?.setBuild({ servers: 1, lb: false, cache: false, queue: false });
+    engineRef.current?.setBuild(freshBuild);
     setVerdict(null);
     setRunning(false);
   };
@@ -119,6 +137,7 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
           <div className={styles.goalText}>
             error rate ≤ {level.goal.maxErr}% · p99 ≤ {level.goal.maxP99}ms · spend ≤ $
             {level.budget}
+            {level.goal.maxStale !== undefined && ` · stale reads ≤ ${level.goal.maxStale}`}
           </div>
         </div>
       </header>
@@ -133,7 +152,9 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
             <canvas ref={canvasRef} className={styles.canvas} role="img" aria-label={description} />
             <p className="sr-only" aria-live="polite">
               {running
-                ? `Running. ${stats.done} served, ${stats.err} dropped, error rate ${stats.errRate.toFixed(1)}%, p99 ${Math.round(stats.p99)}ms.`
+                ? `Running. ${stats.done} served, ${stats.err} dropped, error rate ${stats.errRate.toFixed(1)}%, p99 ${Math.round(stats.p99)}ms${
+                    level.goal.maxStale !== undefined ? `, ${stats.stale} stale reads` : ""
+                  }.`
                 : verdict
                   ? verdict.text
                   : "Ready to run."}
@@ -194,16 +215,59 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
                 bad={stats.p99 > level.goal.maxP99}
                 good={stats.p99 <= level.goal.maxP99}
               />
+              {level.goal.maxStale !== undefined && (
+                <Meter
+                  label="stale"
+                  value={String(stats.stale)}
+                  bad={stats.stale > level.goal.maxStale}
+                  good={stats.stale <= level.goal.maxStale}
+                />
+              )}
               <Meter label="in flight" value={String(stats.inflight)} />
             </div>
           </div>
         </div>
 
         <div className={styles.palette}>
+          {/* Consistency is not something you buy. It is a choice about what
+              the system does when it cannot have everything, so it gets its
+              own control above the parts list. */}
+          {level.replicated && (
+            <div className={styles.modeBlock}>
+              <div className={styles.paletteLabel}>when the network splits</div>
+              <div className={styles.modeTabs} role="group" aria-label="Consistency mode">
+                <button
+                  type="button"
+                  className={`${styles.modeTab} ${build.mode === "cp" ? styles.modeTabActive : ""}`}
+                  onClick={() => setMode("cp")}
+                  aria-pressed={build.mode === "cp"}
+                  disabled={running}
+                >
+                  stay consistent
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.modeTab} ${build.mode === "ap" ? styles.modeTabActive : ""}`}
+                  onClick={() => setMode("ap")}
+                  aria-pressed={build.mode === "ap"}
+                  disabled={running}
+                >
+                  stay available
+                </button>
+              </div>
+              <p className={styles.modeHint}>
+                {build.mode === "cp"
+                  ? "CP — the cut-off side refuses to answer. No stale reads, and its share of the traffic lands on the majority."
+                  : "AP — every replica keeps answering. Nothing errors, but the cut-off side has stopped receiving writes."}
+              </p>
+            </div>
+          )}
+
           <div className={styles.paletteLabel}>build</div>
           {level.tools.map((tool) => {
-            const owned = tool === "server" ? build.servers : build[tool];
-            const already = tool !== "server" && !!build[tool];
+            const count = countOf(tool);
+            // Counted parts can always be bought again; switches only once.
+            const already = count === null && !!build[tool as "lb" | "cache" | "queue" | "hashing"];
             const canAfford = spend + COSTS[tool] <= level.budget;
             const disabled = running || already || !canAfford;
             return (
@@ -217,16 +281,18 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
                 disabled={disabled}
               >
                 <span className={styles.toolHead}>
-                  <span className={`${styles.toolName} ${already ? styles.toolNameOwned : ""}`}>
+                  <span
+                    className={`${styles.toolName} ${already || (count ?? 0) > 1 ? styles.toolNameOwned : ""}`}
+                  >
                     {TOOL_META[tool].name}
                   </span>
                   <span className={styles.toolCost}>${COSTS[tool]}</span>
                 </span>
                 <span className={styles.toolHint}>{TOOL_META[tool].hint}</span>
                 <span className={styles.toolState}>
-                  {tool === "server"
-                    ? `${build.servers} running`
-                    : owned
+                  {count !== null
+                    ? `${count} running`
+                    : already
                       ? "installed"
                       : canAfford
                         ? "available"

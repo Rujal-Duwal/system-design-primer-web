@@ -10,7 +10,7 @@ The primer is one of the best pieces of writing on system design, and it is a si
 
 ## Three modes
 
-- **4 simulations** — a live packet-flow model. You get traffic, a broken topology, an objective and a budget. Buy parts, run the traffic, and find out which node pinned at capacity. The lesson is in the failure, not the diagram.
+- **6 simulations** — a live packet-flow model. You get traffic, a broken topology, an objective and a budget. Buy parts, run the traffic, and find out which node pinned at capacity. The lesson is in the failure, not the diagram — and in the last one, in choosing which guarantee to give up.
 - **20 reference sections** — each with its own URL, a summary written for this site, and the primer's full text below it.
 - **7 exercises** — the design problems, with their constraints and the four-step method as progressive reveals. Step one is open; the rest stay shut so you can attempt before reading.
 

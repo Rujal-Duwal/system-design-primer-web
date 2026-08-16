@@ -75,7 +75,7 @@ try {
   );
   check("sidebar lists 20 sections", (await page.locator('aside a[href^="/reference/"]').count()) === 20);
   check("sidebar lists 7 exercises", (await page.locator('aside a[href^="/exercise/"]').count()) === 7);
-  check("sidebar lists 4 simulations", (await page.locator('aside a[href^="/simulate/"]').count()) === 4);
+  check("sidebar lists 6 simulations", (await page.locator('aside a[href^="/simulate/"]').count()) === 6);
 
   /* --- reference -------------------------------------------------------- */
   console.log("\nreference");
@@ -148,6 +148,30 @@ try {
   check("buying a part resets to run traffic", (await page.getByRole("button", { name: "run traffic" }).count()) > 0);
   // One server ($100) plus the balancer just bought ($80).
   check("spend updated after purchase", (await page.getByText("$180 / $400").count()) > 0);
+
+  /* --- hot shard -------------------------------------------------------- */
+  console.log("\nhot shard");
+  await page.goto(`${BASE}/simulate/hot-shard/`, { waitUntil: "networkidle" });
+  await page.waitForTimeout(400);
+  check("shard palette offered", (await page.getByRole("button", { name: /another shard/ }).count()) === 1);
+  check("hashing offered", (await page.getByRole("button", { name: /consistent hashing/ }).count()) === 1);
+  const shardAria = await page.locator("canvas").getAttribute("aria-label");
+  check("topology describes shards", /shard/i.test(shardAria ?? ""), shardAria?.slice(0, 70));
+
+  /* --- CAP partition ---------------------------------------------------- */
+  console.log("\ncap partition");
+  await page.goto(`${BASE}/simulate/cap-partition/`, { waitUntil: "networkidle" });
+  await page.waitForTimeout(400);
+  check("consistency choice offered", (await page.getByRole("button", { name: "stay consistent" }).count()) === 1);
+  check("stale reads are in the objective", (await page.getByText(/stale reads ≤ 0/).count()) === 1);
+  // AP keeps every replica answering, so the cut-off side returns old data.
+  // The partition lands at 6s, so this has to run past that to see any.
+  await page.getByRole("button", { name: "stay available" }).click();
+  await page.getByRole("button", { name: "run traffic" }).click();
+  await page.waitForTimeout(11000);
+  const capLive = await page.locator('p[aria-live="polite"]').first().innerText();
+  const staleCount = Number(capLive.match(/(\d+) stale reads/)?.[1] ?? 0);
+  check("AP produces stale reads after the split", staleCount > 0, capLive.slice(0, 90));
 
   /* --- ask overlay ------------------------------------------------------ */
   console.log("\nask overlay");

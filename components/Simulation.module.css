@@ -219,6 +219,55 @@
   color: var(--dim);
 }
 
+/* Consistency mode: a choice, not a purchase, so it reads differently from
+   the parts below it. */
+.modeBlock {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+}
+
+.modeTabs {
+  display: flex;
+  padding: 0 20px;
+}
+
+.modeTab {
+  flex: 1 1 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 10px 8px;
+  background: transparent;
+  color: var(--dim);
+  border: 1px solid var(--line);
+  border-left: 0;
+  cursor: pointer;
+}
+.modeTab:first-child {
+  border-left: 1px solid var(--line);
+}
+.modeTab:hover:not(:disabled) {
+  color: var(--accent);
+}
+.modeTab:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.modeTabActive {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+.modeHint {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--dim);
+  margin: 10px 20px 0;
+}
+
 .tool {
   display: block;
   width: 100%;

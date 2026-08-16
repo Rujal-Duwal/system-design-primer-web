@@ -96,15 +96,32 @@ export type Level = {
   tools: ToolKey[];
   budget: number;
   duration: number;
-  goal: { maxErr: number; maxP99: number };
-  chaos?: { at: number };
+  goal: { maxErr: number; maxP99: number; maxStale?: number };
+  /** `kill` drops one app host. `partition` splits the data tier in two. */
+  chaos?: { at: number; kind?: "kill" | "partition" };
+  /** Data tier is sharded, and keys land on it unevenly until you fix that. */
+  shards?: { count: number; skew: number };
+  /** Data tier is replicated, and the reader picks how it behaves split-brain. */
+  replicated?: boolean;
   debrief: string;
   ref: string;
 };
 
-export type ToolKey = "server" | "lb" | "cache" | "queue";
+export type ToolKey = "server" | "lb" | "cache" | "queue" | "shard" | "hashing" | "replica";
 
-export type Build = { servers: number; lb: boolean; cache: boolean; queue: boolean };
+/** Which side of the CAP trade the reader has chosen. */
+export type ConsistencyMode = "cp" | "ap";
+
+export type Build = {
+  servers: number;
+  lb: boolean;
+  cache: boolean;
+  queue: boolean;
+  shards: number;
+  hashing: boolean;
+  replicas: number;
+  mode: ConsistencyMode;
+};
 
 export type RunState = "idle" | "running" | "paused" | "passed" | "failed";
 
@@ -115,4 +132,6 @@ export type Stats = {
   p99: number;
   inflight: number;
   rps: number;
+  /** Reads served from a partitioned replica that may be behind. */
+  stale: number;
 };

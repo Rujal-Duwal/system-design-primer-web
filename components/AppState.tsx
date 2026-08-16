@@ -11,8 +11,9 @@ import {
 } from "react";
 
 import type { Build } from "@/lib/types";
+import { FRESH_BUILD as FRESH } from "@/content/authored/levels.mjs";
 
-const FRESH_BUILD: Build = { servers: 1, lb: false, cache: false, queue: false };
+const FRESH_BUILD = FRESH as Build;
 
 type AppState = {
   /** Levels the reader has passed, persisted so progress survives a reload. */
@@ -30,6 +31,7 @@ type AppState = {
   buildFor: (level: number) => Build;
   setBuild: (level: number, build: Build) => void;
   resetBuild: (level: number) => void;
+  freshBuild: Build;
 
   askOpen: boolean;
   setAskOpen: (open: boolean) => void;
@@ -114,6 +116,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       buildFor,
       setBuild,
       resetBuild,
+      freshBuild: FRESH_BUILD,
       askOpen,
       setAskOpen,
       theme,

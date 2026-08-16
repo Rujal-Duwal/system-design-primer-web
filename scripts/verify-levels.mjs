@@ -15,7 +15,7 @@
  *   node scripts/verify-levels.mjs
  */
 
-import { LEVELS } from "../content/authored/levels.mjs";
+import { LEVELS, FRESH_BUILD } from "../content/authored/levels.mjs";
 
 const RUNS = 12;
 
@@ -51,13 +51,32 @@ const CASES = [
     pass: { servers: 2, lb: true, cache: false, queue: true },
     lesson: "inline slow writes hold a slot; a queue frees it",
   },
+  {
+    // Buying shards adds capacity but leaves the hot range on one node.
+    // Hashing the key is what actually spreads the load.
+    level: 4,
+    fail: { servers: 2, lb: true, shards: 4, hashing: false },
+    pass: { servers: 2, lb: true, shards: 3, hashing: true },
+    lesson: "more shards do not move hot keys; hashing the key does",
+  },
+  {
+    // Staying available means the cut-off side keeps answering with data it
+    // has stopped receiving writes for. This ledger cannot accept that, so
+    // the only way through is CP plus enough majority capacity.
+    level: 5,
+    fail: { servers: 2, lb: true, replicas: 3, mode: "ap" },
+    pass: { servers: 2, lb: true, replicas: 3, mode: "cp" },
+    lesson: "you cannot have both; a ledger pays for consistency with availability",
+  },
 ];
 
 function run(levelIndex, build) {
   const level = LEVELS[levelIndex];
   const outcomes = [];
+  // Cases name only what they change; everything else is the starting build.
+  const full = { ...FRESH_BUILD, ...build };
   for (let i = 0; i < RUNS; i++) {
-    const engine = new SimEngine(level, build, () => {}, () => {});
+    const engine = new SimEngine(level, full, () => {}, () => {});
     outcomes.push(engine.runHeadless());
   }
   const passes = outcomes.filter((o) => o.passed).length;
@@ -67,6 +86,7 @@ function run(levelIndex, build) {
     runs: RUNS,
     errRate: avg((o) => o.stats.errRate),
     p99: avg((o) => o.stats.p99),
+    stale: avg((o) => o.stats.stale),
     spend: outcomes[0].spend,
     reasons: [...new Set(outcomes.map((o) => o.reason).filter(Boolean))],
   };
@@ -87,6 +107,7 @@ for (const c of CASES) {
 
   const fmt = (r) =>
     `err ${r.errRate.toFixed(1)}%  p99 ${Math.round(r.p99)}ms  $${r.spend}` +
+    (level.goal.maxStale !== undefined ? `  stale ${r.stale.toFixed(0)}` : "") +
     (r.reasons.length ? `  (${r.reasons.join(", ")})` : "");
 
   const badOk = bad.passes === 0;
