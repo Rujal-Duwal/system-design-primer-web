@@ -15,12 +15,15 @@
   flex: 0 0 auto;
 }
 
+/* An h1 that is styled as a kicker: it is the page's identity, and the brief
+   under it does the explaining. */
 .kicker {
   font-size: 9.5px;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 9px;
+  margin: 0 0 9px;
 }
 
 .brief {
@@ -195,7 +198,7 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 11px 15px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-line);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
@@ -240,12 +243,12 @@
   padding: 10px 8px;
   background: transparent;
   color: var(--dim);
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-line);
   border-left: 0;
   cursor: pointer;
 }
 .modeTab:first-child {
-  border-left: 1px solid var(--line);
+  border-left: 1px solid var(--control-line);
 }
 .modeTab:hover:not(:disabled) {
   color: var(--accent);

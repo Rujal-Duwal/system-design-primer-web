@@ -60,7 +60,7 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 6px 9px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-line);
   background: var(--panel2);
   color: var(--dim);
   cursor: pointer;

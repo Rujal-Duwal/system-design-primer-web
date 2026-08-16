@@ -276,6 +276,27 @@ function blocksFrom(nodes, ctx) {
   return out;
 }
 
+/**
+ * Renumber a section's headings so they only ever step down by one.
+ *
+ * Upstream depths are relative to the whole README, so a section that starts at
+ * `###` and contains `####` renders under our page `<h1>` as h1 -> h3 -> h4.
+ * Skipping a level breaks the document outline for anyone navigating by
+ * headings (WCAG 1.3.1). The nesting *shape* is what matters, not the original
+ * numbers, so this maps depth onto how deeply nested the heading actually is.
+ */
+function normaliseHeadingDepths(blocks) {
+  const stack = [];
+  for (const b of blocks) {
+    if (b.kind !== "h") continue;
+    while (stack.length && stack[stack.length - 1] >= b.depth) stack.pop();
+    stack.push(b.depth);
+    // +1 because the page title is the h1.
+    b.depth = Math.min(6, stack.length + 1);
+  }
+  return blocks;
+}
+
 /* -------------------------------------------------------------------------- */
 /* section splitting                                                           */
 /* -------------------------------------------------------------------------- */
@@ -594,7 +615,7 @@ async function main() {
   const reference = {};
   for (const section of SECTIONS) {
     const slice = sliced[section.key];
-    const body = slice ? blocksFrom(slice.nodes, ctx) : [];
+    const body = slice ? normaliseHeadingDepths(blocksFrom(slice.nodes, ctx)) : [];
     if (slice && body.length === 0) {
       problems.push(`reference "${section.key}": #${section.anchor} resolved but produced no blocks`);
     }
@@ -635,7 +656,7 @@ async function main() {
         refs: step.refs,
         lede: step.lede,
         upstreamTitle: heading.text,
-        body: blocksFrom(slice.nodes, exCtx),
+        body: normaliseHeadingDepths(blocksFrom(slice.nodes, exCtx)),
       };
     });
 

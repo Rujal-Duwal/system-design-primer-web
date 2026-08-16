@@ -37,6 +37,12 @@ jobs:
       - name: Browser smoke test
         run: npm run smoke
 
+      # WCAG 2.2 AA: axe over every page type in both themes, plus the checks
+      # axe cannot make itself — target size, reflow at 320px, text spacing,
+      # and keyboard reach of the simulation controls.
+      - name: Accessibility audit
+        run: npm run a11y
+
       - name: Upload build output on failure
         if: failure()
         uses: actions/upload-artifact@v7

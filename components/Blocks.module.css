@@ -166,12 +166,22 @@
   margin: 6px 0;
 }
 
+/* Underlined, not just tinted. Inside a block of prose, colour alone is not a
+   sufficient distinction (WCAG 1.4.1), and the offset keeps it legible against
+   descenders. */
 .link {
   color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+.link:hover {
+  text-decoration-thickness: 2px;
 }
 
 .extLink::after {
   content: " ↗";
   color: var(--dim);
   font-size: 0.85em;
+  text-decoration: none;
 }

@@ -52,13 +52,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use cases",
       "anchor": "use-cases"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "We'll scope the problem to handle only the following use cases",
       "anchor": "well-scope-the-problem-to-handle-only-the-following-use-cases"
      },
@@ -235,7 +235,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Out of scope",
       "anchor": "out-of-scope"
      },
@@ -369,13 +369,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Constraints and assumptions",
       "anchor": "constraints-and-assumptions"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "State assumptions",
       "anchor": "state-assumptions"
      },
@@ -459,7 +459,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Calculate usage",
       "anchor": "calculate-usage"
      },
@@ -755,7 +755,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User enters a block of text and gets a randomly generated link",
       "anchor": "use-case-user-enters-a-block-of-text-and-gets-a-randomly-generated-link"
      },
@@ -1467,7 +1467,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User enters a paste's url and views the contents",
       "anchor": "use-case-user-enters-a-pastes-url-and-views-the-contents"
      },
@@ -1671,7 +1671,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: Service tracks analytics of pages",
       "anchor": "use-case-service-tracks-analytics-of-pages"
      },
@@ -1735,7 +1735,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: Service deletes expired pastes",
       "anchor": "use-case-service-deletes-expired-pastes"
      },
@@ -2464,13 +2464,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use cases",
       "anchor": "use-cases"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "We'll scope the problem to handle only the following use cases",
       "anchor": "well-scope-the-problem-to-handle-only-the-following-use-cases"
      },
@@ -2597,7 +2597,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Out of scope",
       "anchor": "out-of-scope"
      },
@@ -2679,13 +2679,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Constraints and assumptions",
       "anchor": "constraints-and-assumptions"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "State assumptions",
       "anchor": "state-assumptions"
      },
@@ -2901,7 +2901,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Calculate usage",
       "anchor": "calculate-usage"
      },
@@ -3252,7 +3252,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User posts a tweet",
       "anchor": "use-case-user-posts-a-tweet"
      },
@@ -3852,7 +3852,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User views the home timeline",
       "anchor": "use-case-user-views-the-home-timeline"
      },
@@ -4081,7 +4081,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User views the user timeline",
       "anchor": "use-case-user-views-the-user-timeline"
      },
@@ -4199,7 +4199,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User searches keywords",
       "anchor": "use-case-user-searches-keywords"
      },
@@ -5339,13 +5339,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use cases",
       "anchor": "use-cases"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "We'll scope the problem to handle only the following use cases",
       "anchor": "well-scope-the-problem-to-handle-only-the-following-use-cases"
      },
@@ -5468,7 +5468,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Out of scope",
       "anchor": "out-of-scope"
      },
@@ -5507,13 +5507,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Constraints and assumptions",
       "anchor": "constraints-and-assumptions"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "State assumptions",
       "anchor": "state-assumptions"
      },
@@ -5716,7 +5716,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Calculate usage",
       "anchor": "calculate-usage"
      },
@@ -5908,7 +5908,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: Service crawls a list of urls",
       "anchor": "use-case-service-crawls-a-list-of-urls"
      },
@@ -6448,7 +6448,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Handling duplicates",
       "anchor": "handling-duplicates"
      },
@@ -6575,7 +6575,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Determining when to update the crawl results",
       "anchor": "determining-when-to-update-the-crawl-results"
      },
@@ -6624,7 +6624,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User inputs a search term and sees a list of relevant pages with titles and snippets",
       "anchor": "use-case-user-inputs-a-search-term-and-sees-a-list-of-relevant-pages-with-titles-and-snippets"
      },
@@ -7605,13 +7605,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use cases",
       "anchor": "use-cases"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "We'll scope the problem to handle only the following use cases",
       "anchor": "well-scope-the-problem-to-handle-only-the-following-use-cases"
      },
@@ -7779,7 +7779,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Out of scope",
       "anchor": "out-of-scope"
      },
@@ -7809,13 +7809,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Constraints and assumptions",
       "anchor": "constraints-and-assumptions"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "State assumptions",
       "anchor": "state-assumptions"
      },
@@ -8008,7 +8008,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Calculate usage",
       "anchor": "calculate-usage"
      },
@@ -8286,7 +8286,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User connects to a financial account",
       "anchor": "use-case-user-connects-to-a-financial-account"
      },
@@ -8631,7 +8631,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: Service extracts transactions from the account",
       "anchor": "use-case-service-extracts-transactions-from-the-account"
      },
@@ -9241,7 +9241,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Category service",
       "anchor": "category-service"
      },
@@ -9320,7 +9320,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: Service recommends a budget",
       "anchor": "use-case-service-recommends-a-budget"
      },
@@ -10624,13 +10624,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use cases",
       "anchor": "use-cases"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "We'll scope the problem to handle only the following use case",
       "anchor": "well-scope-the-problem-to-handle-only-the-following-use-case"
      },
@@ -10696,7 +10696,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Out of scope",
       "anchor": "out-of-scope"
      },
@@ -10733,13 +10733,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Constraints and assumptions",
       "anchor": "constraints-and-assumptions"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "State assumptions",
       "anchor": "state-assumptions"
      },
@@ -10861,7 +10861,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Calculate usage",
       "anchor": "calculate-usage"
      },
@@ -11177,7 +11177,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: Service calculates the past week's most popular products by category",
       "anchor": "use-case-service-calculates-the-past-weeks-most-popular-products-by-category"
      },
@@ -11514,7 +11514,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User views the past week's most popular products by category",
       "anchor": "use-case-user-views-the-past-weeks-most-popular-products-by-category"
      },
@@ -12443,13 +12443,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use cases",
       "anchor": "use-cases"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "We'll scope the problem to handle only the following use cases",
       "anchor": "well-scope-the-problem-to-handle-only-the-following-use-cases"
      },
@@ -12515,13 +12515,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Constraints and assumptions",
       "anchor": "constraints-and-assumptions"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "State assumptions",
       "anchor": "state-assumptions"
      },
@@ -12637,7 +12637,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Calculate usage",
       "anchor": "calculate-usage"
      },
@@ -12882,7 +12882,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User sends a request resulting in a cache hit",
       "anchor": "use-case-user-sends-a-request-resulting-in-a-cache-hit"
      },
@@ -13350,7 +13350,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Cache implementation",
       "anchor": "cache-implementation"
      },
@@ -13475,7 +13475,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "When to update the cache",
       "anchor": "when-to-update-the-cache"
      },
@@ -13920,7 +13920,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Expanding the Memory Cache to many machines",
       "anchor": "expanding-the-memory-cache-to-many-machines"
      },
@@ -14098,7 +14098,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use cases",
       "anchor": "use-cases"
      },
@@ -14157,7 +14157,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "We'll scope the problem to handle only the following use cases",
       "anchor": "well-scope-the-problem-to-handle-only-the-following-use-cases"
      },
@@ -14264,13 +14264,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Constraints and assumptions",
       "anchor": "constraints-and-assumptions"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "State assumptions",
       "anchor": "state-assumptions"
      },
@@ -14413,7 +14413,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Calculate usage",
       "anchor": "calculate-usage"
      },
@@ -14615,13 +14615,13 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Use case: User makes a read or write request",
       "anchor": "use-case-user-makes-a-read-or-write-request"
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Goals",
       "anchor": "goals"
      },
@@ -14676,7 +14676,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Start with a single box",
       "anchor": "start-with-a-single-box"
      },
@@ -14890,7 +14890,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Start with SQL, consider NoSQL",
       "anchor": "start-with-sql-consider-nosql"
      },
@@ -14982,7 +14982,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Assign a public static IP",
       "anchor": "assign-a-public-static-ip"
      },
@@ -15012,7 +15012,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Use a DNS",
       "anchor": "use-a-dns"
      },
@@ -15084,7 +15084,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Secure the web server",
       "anchor": "secure-the-web-server"
      },
@@ -15237,7 +15237,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Users+",
       "anchor": "users"
      },
@@ -15250,7 +15250,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Assumptions",
       "anchor": "assumptions"
      },
@@ -15352,7 +15352,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Goals",
       "anchor": "goals"
      },
@@ -15498,7 +15498,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Store static content separately",
       "anchor": "store-static-content-separately"
      },
@@ -15618,7 +15618,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Move the MySQL database to a separate box",
       "anchor": "move-the-mysql-database-to-a-separate-box"
      },
@@ -15682,7 +15682,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Secure the system",
       "anchor": "secure-the-system"
      },
@@ -15812,7 +15812,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Users++",
       "anchor": "users"
      },
@@ -15825,7 +15825,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Assumptions",
       "anchor": "assumptions"
      },
@@ -15879,7 +15879,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Goals",
       "anchor": "goals"
      },
@@ -16360,7 +16360,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Users+++",
       "anchor": "users"
      },
@@ -16404,7 +16404,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Assumptions",
       "anchor": "assumptions"
      },
@@ -16445,7 +16445,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Goals",
       "anchor": "goals"
      },
@@ -16782,7 +16782,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Add MySQL read replicas",
       "anchor": "add-mysql-read-replicas"
      },
@@ -16948,7 +16948,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Users++++",
       "anchor": "users"
      },
@@ -16961,7 +16961,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Assumptions",
       "anchor": "assumptions"
      },
@@ -17015,7 +17015,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Goals",
       "anchor": "goals"
      },
@@ -17223,7 +17223,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Add autoscaling",
       "anchor": "add-autoscaling"
      },
@@ -17415,7 +17415,7 @@
      },
      {
       "kind": "h",
-      "depth": 3,
+      "depth": 2,
       "text": "Users+++++",
       "anchor": "users"
      },
@@ -17459,7 +17459,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Assumptions",
       "anchor": "assumptions"
      },
@@ -17500,7 +17500,7 @@
      },
      {
       "kind": "h",
-      "depth": 4,
+      "depth": 3,
       "text": "Goals",
       "anchor": "goals"
      },

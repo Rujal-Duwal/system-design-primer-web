@@ -26,7 +26,7 @@
   font-family: var(--mono);
   font-size: 14px;
   padding: 9px 10px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-line);
   background: var(--bg);
   color: var(--fg);
 }
@@ -47,12 +47,12 @@
   padding: 10px 13px;
   background: transparent;
   color: var(--dim);
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-line);
   border-left: 0;
   cursor: pointer;
 }
 .tab:first-child {
-  border-left: 1px solid var(--line);
+  border-left: 1px solid var(--control-line);
 }
 .tab:hover {
   color: var(--accent);

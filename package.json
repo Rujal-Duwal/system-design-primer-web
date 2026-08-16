@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=24"
   },
-  "description": "An interactive companion to donnemartin/system-design-primer — simulations, reference and exercises.",
+  "description": "An interactive companion to donnemartin/system-design-primer \u2014 simulations, reference and exercises.",
   "scripts": {
     "sync": "node scripts/sync.mjs",
     "verify:levels": "node scripts/verify-levels.mjs",
@@ -14,6 +14,7 @@
     "build": "next build",
     "start": "npx serve out",
     "smoke": "node scripts/smoke.mjs",
+    "a11y": "node scripts/a11y.mjs",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
   },
@@ -26,9 +27,11 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "axe-core": "^4.13.0",
     "esbuild": "^0.28.2",
     "mdast-util-from-markdown": "^2.0.2",
     "mdast-util-gfm": "^3.0.0",

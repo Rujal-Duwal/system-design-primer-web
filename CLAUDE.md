@@ -34,9 +34,23 @@ npm run build           # static export to out/
 npm run verify          # typecheck + level tuning
 npm run verify:levels   # simulation tuning only
 npm run smoke           # browser tests against out/ — run build first
+npm run a11y            # WCAG 2.2 AA audit against out/
 ```
 
-Before opening a PR: `npm run verify && npm run build && npm run smoke`.
+Before opening a PR: `npm run verify && npm run build && npm run smoke && npm run a11y`.
+
+## Accessibility
+
+The site targets **WCAG 2.2 AA** and `npm run a11y` gates it in CI. Two things
+that are easy to undo by accident:
+
+- **`--dim` is the floor, not a starting point.** It is tuned to clear 4.5:1 on
+  every background it appears on, including `--accent-bg`. Do not layer
+  `opacity` on top of it — that is exactly what put the sidebar group labels
+  back under threshold once already.
+- **`--line` and `--control-line` are not interchangeable.** Hairline rules and
+  panel edges use `--line`; anything whose border is what makes it read as a
+  control uses `--control-line`, which clears 3:1 for 1.4.11.
 
 ## Layout
 
@@ -50,6 +64,7 @@ scripts/
   sync.mjs           fetch → parse → map → emit
   verify-levels.mjs  headless simulation tuning check
   smoke.mjs          Playwright smoke test
+  a11y.mjs           WCAG 2.2 AA audit
   sim-harness.mjs    bundles the TS engine for Node
 lib/
   sim/engine.ts  the simulation — plain class, mutable refs, rAF

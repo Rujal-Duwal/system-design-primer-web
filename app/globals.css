@@ -8,8 +8,15 @@
   --panel2: #161b19;
   --fg: #e8ece9;
   --muted: #98a09b;
-  --dim: #626a65;
+  /* Lifted from #626a65, which read at 3.1–3.5:1 against these backgrounds.
+     Every small uppercase label on the site uses this, so it has to clear
+     4.5:1 (WCAG 1.4.3) rather than merely look quiet. */
+  --dim: #808582;
   --line: #232a27;
+  /* 1.4.11 wants 3:1 for boundaries that identify a control. Decorative rules
+     are exempt, so --line stays a hairline and only real control edges — the
+     filter input, buttons, tabs — use this. */
+  --control-line: #636866;
   --accent: #4ec48f;
   --accent-bg: #0f1f18;
   --accent-line: #1e3d31;
@@ -28,12 +35,15 @@
   --panel2: #efefea;
   --fg: #0f1211;
   --muted: #535853;
-  --dim: #8a908b;
+  /* Darkened from #8a908b, which read as low as 2.8:1 on the inset panel. */
+  --dim: #696d6a;
   --line: #dbdbd4;
+  --control-line: #8a8a86;
   --accent: #0c7a5f;
   --accent-bg: #e8f3ee;
   --accent-line: #bcdccf;
-  --warn: #9a6b12;
+  /* Nudged from #9a6b12 so the write/hot meter clears 4.5:1 on the inset. */
+  --warn: #8f6411;
   --bad: #b8342b;
 }
 

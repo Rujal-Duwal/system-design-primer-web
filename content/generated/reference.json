@@ -131,7 +131,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -269,7 +269,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -414,7 +414,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "CP - consistency and partition tolerance",
     "anchor": "cp---consistency-and-partition-tolerance"
    },
@@ -429,7 +429,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "AP - availability and partition tolerance",
     "anchor": "ap---availability-and-partition-tolerance"
    },
@@ -519,7 +519,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Weak consistency",
     "anchor": "weak-consistency"
    },
@@ -543,7 +543,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Eventual consistency",
     "anchor": "eventual-consistency"
    },
@@ -567,7 +567,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Strong consistency",
     "anchor": "strong-consistency"
    },
@@ -591,7 +591,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -681,13 +681,13 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Fail-over",
     "anchor": "fail-over"
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Active-passive",
     "anchor": "active-passive"
    },
@@ -720,7 +720,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Active-active",
     "anchor": "active-active"
    },
@@ -753,7 +753,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Disadvantage(s): failover",
     "anchor": "disadvantages-failover"
    },
@@ -783,13 +783,13 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Replication",
     "anchor": "replication"
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Master-slave and master-master",
     "anchor": "master-slave-and-master-master"
    },
@@ -857,7 +857,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Availability in numbers",
     "anchor": "availability-in-numbers"
    },
@@ -872,7 +872,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "99.9% availability - three 9s",
     "anchor": "999-availability---three-9s"
    },
@@ -957,7 +957,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "99.99% availability - four 9s",
     "anchor": "9999-availability---four-9s"
    },
@@ -1042,7 +1042,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Availability in parallel vs in sequence",
     "anchor": "availability-in-parallel-vs-in-sequence"
    },
@@ -1057,7 +1057,7 @@
    },
    {
     "kind": "h",
-    "depth": 6,
+    "depth": 4,
     "text": "In sequence",
     "anchor": "in-sequence"
    },
@@ -1102,7 +1102,7 @@
    },
    {
     "kind": "h",
-    "depth": 6,
+    "depth": 4,
     "text": "In parallel",
     "anchor": "in-parallel"
    },
@@ -1465,7 +1465,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Disadvantage(s): DNS",
     "anchor": "disadvantages-dns"
    },
@@ -1534,7 +1534,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -1670,7 +1670,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Push CDNs",
     "anchor": "push-cdns"
    },
@@ -1694,7 +1694,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Pull CDNs",
     "anchor": "pull-cdns"
    },
@@ -1742,7 +1742,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Disadvantage(s): CDN",
     "anchor": "disadvantages-cdn"
    },
@@ -1781,7 +1781,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -2141,7 +2141,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Layer 4 load balancing",
     "anchor": "layer-4-load-balancing"
    },
@@ -2186,7 +2186,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Layer 7 load balancing",
     "anchor": "layer-7-load-balancing"
    },
@@ -2225,7 +2225,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Horizontal scaling",
     "anchor": "horizontal-scaling"
    },
@@ -2253,7 +2253,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Disadvantage(s): horizontal scaling",
     "anchor": "disadvantages-horizontal-scaling"
    },
@@ -2338,7 +2338,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Disadvantage(s): load balancer",
     "anchor": "disadvantages-load-balancer"
    },
@@ -2377,7 +2377,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -2741,7 +2741,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Load balancer vs reverse proxy",
     "anchor": "load-balancer-vs-reverse-proxy"
    },
@@ -2780,7 +2780,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Disadvantage(s): reverse proxy",
     "anchor": "disadvantages-reverse-proxy"
    },
@@ -2825,7 +2825,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -2981,7 +2981,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Microservices",
     "anchor": "microservices"
    },
@@ -3035,7 +3035,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Service Discovery",
     "anchor": "service-discovery"
    },
@@ -3140,7 +3140,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Disadvantage(s): application layer",
     "anchor": "disadvantages-application-layer"
    },
@@ -3170,7 +3170,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -3305,7 +3305,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Message queues",
     "anchor": "message-queues"
    },
@@ -3428,7 +3428,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Task queues",
     "anchor": "task-queues"
    },
@@ -3468,7 +3468,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Back pressure",
     "anchor": "back-pressure"
    },
@@ -3513,7 +3513,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Disadvantage(s): asynchronism",
     "anchor": "disadvantages-asynchronism"
    },
@@ -3534,7 +3534,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -3644,7 +3644,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Hypertext transfer protocol (HTTP)",
     "anchor": "hypertext-transfer-protocol-http"
    },
@@ -3916,7 +3916,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Source(s) and further reading: HTTP",
     "anchor": "sources-and-further-reading-http"
    },
@@ -3976,7 +3976,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Transmission control protocol (TCP)",
     "anchor": "transmission-control-protocol-tcp"
    },
@@ -4198,7 +4198,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "User datagram protocol (UDP)",
     "anchor": "user-datagram-protocol-udp"
    },
@@ -4295,7 +4295,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Source(s) and further reading: TCP and UDP",
     "anchor": "sources-and-further-reading-tcp-and-udp"
    },
@@ -4403,7 +4403,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Remote procedure call (RPC)",
     "anchor": "remote-procedure-call-rpc"
    },
@@ -4680,7 +4680,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Disadvantage(s): RPC",
     "anchor": "disadvantages-rpc"
    },
@@ -4758,7 +4758,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Representational state transfer (REST)",
     "anchor": "representational-state-transfer-rest"
    },
@@ -4909,7 +4909,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Disadvantage(s): REST",
     "anchor": "disadvantages-rest"
    },
@@ -4957,7 +4957,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "RPC and REST calls comparison",
     "anchor": "rpc-and-rest-calls-comparison"
    },
@@ -5339,7 +5339,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Source(s) and further reading: REST and RPC",
     "anchor": "sources-and-further-reading-rest-and-rpc"
    },
@@ -5535,7 +5535,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Client caching",
     "anchor": "client-caching"
    },
@@ -5565,7 +5565,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "CDN caching",
     "anchor": "cdn-caching"
    },
@@ -5591,7 +5591,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Web server caching",
     "anchor": "web-server-caching"
    },
@@ -5632,7 +5632,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Database caching",
     "anchor": "database-caching"
    },
@@ -5647,7 +5647,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Application caching",
     "anchor": "application-caching"
    },
@@ -5811,7 +5811,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Caching at the database query level",
     "anchor": "caching-at-the-database-query-level"
    },
@@ -5850,7 +5850,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Caching at the object level",
     "anchor": "caching-at-the-object-level"
    },
@@ -5940,7 +5940,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "When to update the cache",
     "anchor": "when-to-update-the-cache"
    },
@@ -5955,7 +5955,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Cache-aside",
     "anchor": "cache-aside"
    },
@@ -6053,7 +6053,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 4,
     "text": "Disadvantage(s): cache-aside",
     "anchor": "disadvantages-cache-aside"
    },
@@ -6092,7 +6092,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Write-through",
     "anchor": "write-through"
    },
@@ -6184,7 +6184,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 4,
     "text": "Disadvantage(s): write through",
     "anchor": "disadvantages-write-through"
    },
@@ -6214,7 +6214,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Write-behind (write-back)",
     "anchor": "write-behind-write-back"
    },
@@ -6260,7 +6260,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 4,
     "text": "Disadvantage(s): write-behind",
     "anchor": "disadvantages-write-behind"
    },
@@ -6290,7 +6290,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Refresh-ahead",
     "anchor": "refresh-ahead"
    },
@@ -6321,7 +6321,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 4,
     "text": "Disadvantage(s): refresh-ahead",
     "anchor": "disadvantages-refresh-ahead"
    },
@@ -6342,7 +6342,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Disadvantage(s): cache",
     "anchor": "disadvantages-cache"
    },
@@ -6396,7 +6396,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -6762,7 +6762,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Master-slave replication",
     "anchor": "master-slave-replication"
    },
@@ -6784,7 +6784,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Disadvantage(s): master-slave replication",
     "anchor": "disadvantages-master-slave-replication"
    },
@@ -6842,7 +6842,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Master-master replication",
     "anchor": "master-master-replication"
    },
@@ -6864,7 +6864,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Disadvantage(s): master-master replication",
     "anchor": "disadvantages-master-master-replication"
    },
@@ -6940,7 +6940,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Disadvantage(s): replication",
     "anchor": "disadvantages-replication"
    },
@@ -6997,7 +6997,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Source(s) and further reading: replication",
     "anchor": "sources-and-further-reading-replication"
    },
@@ -7041,7 +7041,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Federation",
     "anchor": "federation"
    },
@@ -7102,7 +7102,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Disadvantage(s): federation",
     "anchor": "disadvantages-federation"
    },
@@ -7165,7 +7165,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Source(s) and further reading: federation",
     "anchor": "sources-and-further-reading-federation"
    },
@@ -7193,7 +7193,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Sharding",
     "anchor": "sharding"
    },
@@ -7248,7 +7248,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Disadvantage(s): sharding",
     "anchor": "disadvantages-sharding"
    },
@@ -7327,7 +7327,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Source(s) and further reading: sharding",
     "anchor": "sources-and-further-reading-sharding"
    },
@@ -7387,7 +7387,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Denormalization",
     "anchor": "denormalization"
    },
@@ -7480,7 +7480,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Disadvantage(s): denormalization",
     "anchor": "disadvantages-denormalization"
    },
@@ -7519,7 +7519,7 @@
    },
    {
     "kind": "h",
-    "depth": 6,
+    "depth": 4,
     "text": "Source(s) and further reading: denormalization",
     "anchor": "sources-and-further-reading-denormalization"
    },
@@ -7547,7 +7547,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "SQL tuning",
     "anchor": "sql-tuning"
    },
@@ -7693,7 +7693,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Tighten up the schema",
     "anchor": "tighten-up-the-schema"
    },
@@ -7896,7 +7896,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Use good indices",
     "anchor": "use-good-indices"
    },
@@ -8000,7 +8000,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Avoid expensive joins",
     "anchor": "avoid-expensive-joins"
    },
@@ -8032,7 +8032,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Partition tables",
     "anchor": "partition-tables"
    },
@@ -8053,7 +8053,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Tune the query cache",
     "anchor": "tune-the-query-cache"
    },
@@ -8104,7 +8104,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Source(s) and further reading: SQL tuning",
     "anchor": "sources-and-further-reading-sql-tuning"
    },
@@ -8456,7 +8456,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Key-value store",
     "anchor": "key-value-store"
    },
@@ -8518,7 +8518,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Source(s) and further reading: key-value store",
     "anchor": "sources-and-further-reading-key-value-store"
    },
@@ -8594,7 +8594,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Document store",
     "anchor": "document-store"
    },
@@ -8704,7 +8704,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Source(s) and further reading: document store",
     "anchor": "sources-and-further-reading-document-store"
    },
@@ -8780,7 +8780,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Wide column store",
     "anchor": "wide-column-store"
    },
@@ -8883,7 +8883,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Source(s) and further reading: wide column store",
     "anchor": "sources-and-further-reading-wide-column-store"
    },
@@ -8959,7 +8959,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Graph database",
     "anchor": "graph-database"
    },
@@ -9019,7 +9019,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 3,
     "text": "Source(s) and further reading: graph",
     "anchor": "sources-and-further-reading-graph"
    },
@@ -9079,7 +9079,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Source(s) and further reading: NoSQL",
     "anchor": "sources-and-further-reading-nosql"
    },
@@ -9452,7 +9452,7 @@
    },
    {
     "kind": "h",
-    "depth": 5,
+    "depth": 2,
     "text": "Source(s) and further reading: SQL or NoSQL",
     "anchor": "sources-and-further-reading-sql-or-nosql"
    },
@@ -9587,7 +9587,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Step 1: Outline use cases, constraints, and assumptions",
     "anchor": "step-1-outline-use-cases-constraints-and-assumptions"
    },
@@ -9680,7 +9680,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Step 2: Create a high level design",
     "anchor": "step-2-create-a-high-level-design"
    },
@@ -9719,7 +9719,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Step 3: Design core components",
     "anchor": "step-3-design-core-components"
    },
@@ -9863,7 +9863,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Step 4: Scale the design",
     "anchor": "step-4-scale-the-design"
    },
@@ -9944,7 +9944,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Back-of-the-envelope calculations",
     "anchor": "back-of-the-envelope-calculations"
    },
@@ -10028,7 +10028,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -10171,7 +10171,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Powers of two table",
     "anchor": "powers-of-two-table"
    },
@@ -10182,7 +10182,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 3,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -10298,7 +10298,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Latency numbers visualized",
     "anchor": "latency-numbers-visualized"
    },
@@ -10311,7 +10311,7 @@
    },
    {
     "kind": "h",
-    "depth": 4,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },
@@ -10534,7 +10534,7 @@
    },
    {
     "kind": "h",
-    "depth": 3,
+    "depth": 2,
     "text": "Source(s) and further reading",
     "anchor": "sources-and-further-reading"
    },

@@ -138,9 +138,11 @@ export function Simulation({ level, index }: { level: Level; index: number }) {
     <div className={styles.view}>
       <header className={styles.header}>
         <div style={{ minWidth: 0 }}>
-          <div className={styles.kicker}>
+          {/* The kicker was a div, which left these pages with no h1 at all.
+              It carries the page's identity, so it is the heading. */}
+          <h1 className={styles.kicker}>
             simulation {String(index + 1).padStart(2, "0")} — {level.title}
-          </div>
+          </h1>
           <p className={styles.brief}>{level.brief}</p>
         </div>
         <div className={styles.goal}>

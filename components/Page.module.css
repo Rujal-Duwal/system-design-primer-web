@@ -142,6 +142,9 @@
   font-size: 11px;
   letter-spacing: 0.04em;
   color: var(--dim);
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 .quietLink:hover {
   color: var(--accent);

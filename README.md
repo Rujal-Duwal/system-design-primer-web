@@ -59,7 +59,9 @@ npm run smoke     # browser tests against out/ (run build first)
 
 **`npm run smoke`** drives the built export in Chromium: the canvas paints, meters move under load, buying a part resets the run, `/` opens search and Enter opens the top hit, the theme survives a reload, and 375px has no horizontal overflow.
 
-Both run in CI on every push and pull request.
+**`npm run a11y`** audits against WCAG 2.2 Level AA — axe-core over every page type in both themes, plus the things axe cannot check on its own: 24px target sizes (2.5.8), reflow at 320px (1.4.10), the spec's text-spacing override (1.4.12), and keyboard reach of the simulation controls (2.1.1).
+
+All three run in CI on every push and pull request.
 
 ## Layout
 
@@ -73,6 +75,7 @@ scripts/
   sync.mjs           fetch → parse → map → emit
   verify-levels.mjs  simulation tuning check
   smoke.mjs          browser smoke test
+  a11y.mjs           WCAG 2.2 AA audit
 lib/
   sim/engine.ts  the simulation — plain class, mutable refs, rAF
   search.ts      lexical index, shared by search and LLM retrieval
@@ -90,6 +93,22 @@ The reasoning behind the non-obvious choices is in [`docs/adr/`](docs/adr/), wri
 - **Packets never enter React state.** A few hundred objects re-rendering per frame will not hold 60fps, so the engine owns them and reports metrics eight times a second. ([ADR-0003](docs/adr/0003-simulation-outside-react-state.md))
 - **The model runs in a worker, lazily.** `Llama-3.2-1B-Instruct-q4f16_1-MLC`, 879 MB, opt-in behind a gate that states the cost first. Search works without it. ([ADR-0004](docs/adr/0004-on-device-llm-in-a-worker.md))
 - **Nothing upstream is injected as HTML.** The sync emits a block tree and the renderer builds React elements from it.
+
+## Accessibility
+
+Conforms to **WCAG 2.2 Level AA**, enforced in CI rather than asserted here.
+
+Some of what that took: the small uppercase labels used a grey that read at
+3.1:1 and now clear 4.5:1; control boundaries have their own token so they meet
+3:1 without turning the design's hairline rules into borders; simulation pages
+gained a real `<h1>`; upstream heading levels are renumbered during the sync so
+the outline never skips a level; links in prose are underlined rather than only
+tinted; and every standalone link meets the 24px target minimum.
+
+The simulation canvas is not usable without sight. It carries a text
+description of the current topology and a live region announcing served,
+dropped, error rate, p99 and stale counts as the run proceeds, so the outcome
+and the reason for it are available without the picture.
 
 ## Privacy
 
