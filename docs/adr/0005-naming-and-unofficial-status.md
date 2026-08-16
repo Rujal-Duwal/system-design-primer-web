@@ -1,4 +1,4 @@
-# 0005 — Name the site after the primer, disclaim loudly
+# 0005 — Name the site after the primer, state provenance once
 
 **Status:** Accepted · 2026-08-16
 
@@ -21,25 +21,37 @@ the relationship regardless of intent.
 ## Decision
 
 Name the site **`system-design-primer`**, served from
-`system-design-primer.rujalduwal.com.np`, and carry the disclaimer everywhere the
-name goes:
+`system-design-primer.rujalduwal.com.np`, and state provenance **once, clearly**,
+in the sidebar footer that appears on every page:
 
-- **Tagline**, beside the wordmark on every page: *"simulated · an unofficial companion"*
-- **Sidebar footer**: *"An unofficial companion to donnemartin/system-design-primer · CC BY 4.0. Not affiliated with the upstream project."*
-- **Meta description and Open Graph**, so it appears in search results and link previews
-- **README**, in the first line
+> Content from donnemartin/system-design-primer · CC BY 4.0. An independent
+> project, not affiliated with its authors.
 
-Hosting on a personal subdomain rather than a bare domain does part of this work
-already — the URL reads as one person's project, not an official property.
+Plus the first line of the README, and the full detail in `LICENSE`.
 
-Assert the sidebar disclaimer in `scripts/smoke.mjs`.
+Deliberately **not** everywhere else. A first pass put a disclaimer in the
+tagline, the meta description, the Open Graph card and the README as well —
+a reader met it twice per page and twice more in link previews. That reads as
+apologetic, and it spent the most prominent line on the page saying what the
+site is *not*. The tagline now says what it does: *"run it, don't just read it"*.
+
+CC BY 4.0 requires attribution, a licence link, and an indication that changes
+were made. It does not require the word "unofficial". The non-affiliation line
+is there because the site carries the upstream name, and one clear statement
+discharges that.
+
+Hosting on a personal subdomain does part of the work already — the URL reads as
+one person's project, not an official property.
+
+Assert the sidebar statement in `scripts/smoke.mjs` so it cannot be dropped
+silently.
 
 ## Consequences
 
 - A reader arriving from the issue knows what the site covers before it loads.
-- The relationship to the upstream project is stated on every page, not buried in
-  a footer on one.
-- The disclaimer is load-bearing. Removing it fails the smoke test rather than
+- The relationship to the upstream project is stated on every page, in the one
+  place a reader looks for provenance, without crowding what the site is for.
+- The statement is load-bearing. Removing it fails the smoke test rather than
   shipping quietly — this is the main reason the assertion exists.
 - The name is long. It wraps in the 252px sidebar and takes the smallest type on
   the mobile bar, both of which were laid out for a much shorter wordmark.

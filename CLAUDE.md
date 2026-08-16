@@ -4,7 +4,7 @@ Guidance for working in this repo.
 
 ## What this is
 
-An unofficial interactive companion to [donnemartin/system-design-primer](https://github.com/donnemartin/system-design-primer), built for [issue #1363](https://github.com/donnemartin/system-design-primer/issues/1363). Next.js 16 App Router, TypeScript, `output: 'export'` — a fully static site, no backend, no runtime data fetching.
+An interactive companion to [donnemartin/system-design-primer](https://github.com/donnemartin/system-design-primer), built for [issue #1363](https://github.com/donnemartin/system-design-primer/issues/1363). Next.js 16 App Router, TypeScript, `output: 'export'` — a fully static site, no backend, no runtime data fetching.
 
 Live at https://system-design-primer.rujalduwal.com.np
 
@@ -81,7 +81,9 @@ If you touch any number in `content/authored/levels.mjs`, run it. A level that b
 
 ## Attribution
 
-The site is named after the upstream project, so it states that it is unofficial in the tagline, the sidebar footer, the meta description and the README. Content is CC BY 4.0. **Keep those disclaimers intact** — `npm run smoke` asserts the sidebar one, so removing it fails the test rather than shipping quietly.
+The site carries the upstream project's name, so it states provenance — attribution, CC BY 4.0, and that it is independent — **once**, in the sidebar footer on every page. `npm run smoke` asserts it, so removing it fails the test rather than shipping quietly.
+
+Don't add the disclaimer back to the tagline, meta description or OG card. It was there once; it read as apologetic and crowded out what the site is for. See [ADR-0005](docs/adr/0005-naming-and-unofficial-status.md).
 
 ## Deployment
 

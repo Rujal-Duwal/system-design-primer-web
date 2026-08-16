@@ -67,9 +67,11 @@ try {
   console.log("\nhome");
   await page.goto(BASE, { waitUntil: "networkidle" });
   check("title renders", (await page.title()).includes("system-design-primer"));
+  // Provenance is stated once, in the sidebar. Asserted so it cannot be
+  // dropped silently in a redesign.
   check(
-    "unofficial status is stated in the sidebar",
-    (await page.getByText(/unofficial companion/i).count()) > 0
+    "attribution and independence stated in the sidebar",
+    (await page.getByText(/not affiliated with its authors/i).count()) > 0
   );
   check("sidebar lists 20 sections", (await page.locator('aside a[href^="/reference/"]').count()) === 20);
   check("sidebar lists 7 exercises", (await page.locator('aside a[href^="/exercise/"]').count()) === 7);

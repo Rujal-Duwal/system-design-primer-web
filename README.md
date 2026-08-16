@@ -1,7 +1,6 @@
 # system-design-primer (web)
 
-**An unofficial interactive companion to [donnemartin/system-design-primer](https://github.com/donnemartin/system-design-primer).**
-Not affiliated with, endorsed by, or maintained by the upstream project. Content is reused under CC BY 4.0.
+**An interactive companion to [donnemartin/system-design-primer](https://github.com/donnemartin/system-design-primer)** — an independent project, not affiliated with or endorsed by its authors. Content is reused under CC BY 4.0.
 
 **→ https://system-design-primer.rujalduwal.com.np**
 
@@ -91,6 +90,24 @@ The reasoning behind the non-obvious choices is in [`docs/adr/`](docs/adr/), wri
 - **Packets never enter React state.** A few hundred objects re-rendering per frame will not hold 60fps, so the engine owns them and reports metrics eight times a second. ([ADR-0003](docs/adr/0003-simulation-outside-react-state.md))
 - **The model runs in a worker, lazily.** `Llama-3.2-1B-Instruct-q4f16_1-MLC`, 879 MB, opt-in behind a gate that states the cost first. Search works without it. ([ADR-0004](docs/adr/0004-on-device-llm-in-a-worker.md))
 - **Nothing upstream is injected as HTML.** The sync emits a block tree and the renderer builds React elements from it.
+
+## Contributing
+
+One thing worth knowing before you open a PR:
+
+**Corrections to the system design material belong upstream, not here.** Section
+bodies and exercise steps are rebuilt from
+[donnemartin/system-design-primer](https://github.com/donnemartin/system-design-primer)
+on every sync, so a fix made in this repo would be overwritten the next time it
+runs — and would put this site out of step with the source it credits. Send those
+to the primer; they will arrive here on their own.
+
+What does belong here: the application, the sync, the simulations, the authored
+summaries in `content/authored/`, bugs, and accessibility or performance work.
+
+If a section renders wrongly, that is a bug in this repo even when the words are
+upstream's — the parser or the mapping in `content/authored/sections.mjs` is
+usually the culprit.
 
 ## Licence
 

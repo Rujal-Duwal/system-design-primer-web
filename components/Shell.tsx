@@ -136,8 +136,7 @@ function Sidebar({ open }: { open: boolean }) {
           <Link href="/" className={styles.wordmark}>
             system-design-primer
           </Link>
-          {/* Names what it teaches, then disclaims official status. */}
-          <div className={styles.tagline}>simulated · an unofficial companion</div>
+          <div className={styles.tagline}>run it, don&rsquo;t just read it</div>
         </div>
         <button
           type="button"
@@ -243,11 +242,12 @@ function Sidebar({ open }: { open: boolean }) {
         </button>
       </div>
 
+      {/* The one place provenance is stated. Persistent, factual, and enough:
+          attribution, licence, and that this is not the upstream project. */}
       <div className={styles.attribution}>
-        An unofficial companion to{" "}
-        <a href={SOURCE.url}>donnemartin/system-design-primer</a> · {SOURCE.licence}.
-        Not affiliated with the upstream project. Simulation is a teaching model, not a
-        benchmark.
+        Content from <a href={SOURCE.url}>donnemartin/system-design-primer</a> ·{" "}
+        {SOURCE.licence}. An independent project, not affiliated with its authors.
+        Simulation is a teaching model, not a benchmark.
       </div>
     </aside>
   );

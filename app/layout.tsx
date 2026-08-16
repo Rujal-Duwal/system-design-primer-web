@@ -25,14 +25,8 @@ const sans = IBM_Plex_Sans({
 
 const SITE = "system-design-primer";
 
-/**
- * The tagline carries the disclaimer.
- *
- * The site is named after the material it teaches, which is accurate but could
- * be read as official. It is an unofficial CC BY 4.0 companion, so it says so
- * next to the wordmark on every page rather than leaving that to the URL.
- */
-const TAGLINE = "simulated · an unofficial companion";
+/** Says what the site does. Provenance is stated once, in the sidebar footer. */
+const TAGLINE = "run it, don't just read it";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://system-design-primer.rujalduwal.com.np"),
@@ -41,14 +35,14 @@ export const metadata: Metadata = {
     template: `%s — ${SITE}`,
   },
   description:
-    "An unofficial interactive companion to donnemartin's system design primer: run traffic through a system you build, read the reference, and work the design problems.",
+    "An interactive companion to donnemartin's system design primer: run traffic through a system you build, read the reference, and work the design problems.",
   applicationName: SITE,
   openGraph: {
     type: "website",
     siteName: SITE,
     title: `${SITE} — ${TAGLINE}`,
     description:
-      "Run traffic through a system you build, read the primer's reference, and work the design problems. An unofficial companion to donnemartin/system-design-primer.",
+      "Run traffic through a system you build, read the primer's reference, and work the design problems. An independent companion to donnemartin/system-design-primer.",
   },
   twitter: { card: "summary_large_image" },
 };
