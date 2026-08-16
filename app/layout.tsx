@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 import { Shell } from "@/components/Shell";
@@ -79,6 +81,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Shell>{children}</Shell>
+        {/* Cookieless and collects no personal data, which is the only kind of
+            analytics that belongs on a site whose own copy promises that
+            nothing leaves the browser. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

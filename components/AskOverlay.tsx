@@ -275,8 +275,13 @@ export function AskOverlay({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
+        {/* Precise on purpose. The site does send cookieless pageview counts,
+            so "nothing leaves the browser" would be too broad a claim — but
+            search and the model both run locally, and the question itself
+            genuinely never goes anywhere. */}
         <div className={styles.footer}>
-          Answers are grounded in the synced primer text only. Nothing leaves the browser.
+          Answers are grounded in the synced primer text only. Your question never leaves
+          the browser.
         </div>
       </div>
     </div>

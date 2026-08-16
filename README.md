@@ -91,6 +91,13 @@ The reasoning behind the non-obvious choices is in [`docs/adr/`](docs/adr/), wri
 - **The model runs in a worker, lazily.** `Llama-3.2-1B-Instruct-q4f16_1-MLC`, 879 MB, opt-in behind a gate that states the cost first. Search works without it. ([ADR-0004](docs/adr/0004-on-device-llm-in-a-worker.md))
 - **Nothing upstream is injected as HTML.** The sync emits a block tree and the renderer builds React elements from it.
 
+## Privacy
+
+Cookieless pageview and Core Web Vitals counts via Vercel Analytics — no cookies,
+no personal data, no cross-site tracking. Search runs against a local index and
+the optional model runs in your tab, so **what you type into the search overlay
+never leaves the browser**.
+
 ## Contributing
 
 One thing worth knowing before you open a PR:
