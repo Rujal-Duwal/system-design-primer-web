@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Every simulation must fail with the starting build and pass with the
+      # intended one. A level that becomes winnable without its lesson has
+      # stopped teaching, and nothing in the UI would show it.
+      - name: Simulation tuning
+        run: npm run verify:levels
+
+      # The generated content is committed, so the build needs no network.
+      - name: Build
+        run: npm run build
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser smoke test
+        run: npm run smoke
+
+      - name: Upload build output on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: out
+          path: out/
+          retention-days: 3

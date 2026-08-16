@@ -1,0 +1,122 @@
+/* ---------------------------------------------------------------------------
+   Design tokens. Dark is the default; light is opt-in via data-sdp-theme.
+   Every colour in the app comes from here — no literals in components.
+   --------------------------------------------------------------------------- */
+:root {
+  --bg: #0a0c0b;
+  --panel: #101413;
+  --panel2: #161b19;
+  --fg: #e8ece9;
+  --muted: #98a09b;
+  --dim: #626a65;
+  --line: #232a27;
+  --accent: #4ec48f;
+  --accent-bg: #0f1f18;
+  --accent-line: #1e3d31;
+  --warn: #d8a657;
+  --bad: #e06c63;
+
+  --mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --sidebar-w: 252px;
+}
+
+:root[data-sdp-theme="light"] {
+  --bg: #f6f6f3;
+  --panel: #ffffff;
+  --panel2: #efefea;
+  --fg: #0f1211;
+  --muted: #535853;
+  --dim: #8a908b;
+  --line: #dbdbd4;
+  --accent: #0c7a5f;
+  --accent-bg: #e8f3ee;
+  --accent-line: #bcdccf;
+  --warn: #9a6b12;
+  --bad: #b8342b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+}
+
+/* The shell owns scrolling; the document itself never scrolls. */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent-bg);
+}
+
+/* Focus gets the same dim -> accent treatment as hover, so keyboard users get
+   the same affordance mouse users do. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link, visible only when focused. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

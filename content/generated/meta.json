@@ -1,0 +1,15 @@
+{
+  "syncedAt": "2026-08-16T16:07:15.148Z",
+  "repo": "donnemartin/system-design-primer",
+  "branch": "master",
+  "licence": "CC BY 4.0",
+  "sections": 20,
+  "exercises": 7,
+  "images": 42,
+  "problems": [],
+  "unresolvedAnchors": [
+    "contributing",
+    "index-of-system-design-topics",
+    "system-design-interview-questions-with-solutions"
+  ]
+}

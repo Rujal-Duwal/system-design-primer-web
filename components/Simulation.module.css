@@ -1,0 +1,424 @@
+.view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.header {
+  padding: 22px 32px 18px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  flex: 0 0 auto;
+}
+
+.kicker {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 9px;
+}
+
+.brief {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 62em;
+  margin: 0;
+}
+
+.goal {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.goalLabel {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 7px;
+}
+
+.goalText {
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--fg);
+}
+
+/* Load-bearing: minmax(0, 1fr) rather than 1fr. A content-sized row lets the
+   canvas push the shell past the viewport and the whole page starts scrolling. */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 268px;
+  grid-template-rows: minmax(0, 1fr);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid var(--line);
+}
+
+.canvasWrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+  background: var(--panel);
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.verdict {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.verdictPassed {
+  background: rgba(0, 0, 0, 0.55);
+}
+.verdictFailed {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.verdictCard {
+  border: 1px solid var(--accent-line);
+  background: var(--panel);
+  padding: 26px 30px;
+  max-width: 440px;
+}
+.verdictCardFailed {
+  border-color: var(--bad);
+}
+
+.verdictKicker {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.verdictKickerFailed {
+  color: var(--bad);
+}
+
+.verdictText {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--fg);
+  margin: 0 0 18px;
+}
+
+.verdictActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.meterBar {
+  border-top: 1px solid var(--line);
+  background: var(--panel2);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+}
+
+.meters {
+  display: flex;
+  gap: 22px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.meterLabel {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 5px;
+}
+
+.meterValue {
+  font-size: 15px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+.meterBad {
+  color: var(--bad);
+}
+.meterGood {
+  color: var(--accent);
+}
+
+.primaryButton {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 11px 18px;
+  border: 1px solid var(--accent-line);
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+}
+.primaryButton:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.ghostButton {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 11px 15px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.ghostButton:hover {
+  color: var(--fg);
+  border-color: var(--accent-line);
+}
+
+.palette {
+  overflow-y: auto;
+  background: var(--panel);
+  min-height: 0;
+}
+
+.paletteLabel {
+  padding: 18px 20px 10px;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.tool {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 14px 20px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  font-family: var(--mono);
+}
+.toolOwned {
+  background: var(--accent-bg);
+}
+.toolDisabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.toolHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.toolName {
+  font-size: 11.5px;
+  color: var(--fg);
+}
+.toolNameOwned {
+  color: var(--accent);
+}
+
+.toolCost {
+  font-size: 10px;
+  color: var(--dim);
+}
+
+/* These are spans inside a button, so they need an explicit block display or
+   the hint and the state run together on one line. */
+.toolHint {
+  display: block;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--dim);
+  text-align: left;
+}
+
+.toolState {
+  display: block;
+  font-size: 10px;
+  color: var(--accent);
+  margin-top: 7px;
+}
+
+.spend {
+  padding: 18px 20px;
+  border-top: 1px solid var(--line);
+}
+
+.spendHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.spendLabel {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.spendValue {
+  font-size: 11.5px;
+  color: var(--accent);
+}
+.spendOver {
+  color: var(--bad);
+}
+
+.spendTrack {
+  height: 4px;
+  background: var(--panel2);
+}
+
+.spendFill {
+  height: 4px;
+  background: var(--accent);
+}
+.spendFillOver {
+  background: var(--bad);
+}
+
+.spendNote {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--dim);
+  margin: 12px 0 0;
+}
+
+.debrief {
+  padding: 20px;
+  border-top: 1px solid var(--accent-line);
+  background: var(--accent-bg);
+}
+
+.debriefLabel {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.debriefText {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--fg);
+  margin: 0 0 14px;
+}
+
+.debriefLink {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 9px 12px;
+  border: 1px solid var(--accent-line);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font-family: var(--mono);
+}
+.debriefLink:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.narrowNote {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .view {
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 22px 20px 18px;
+  }
+
+  .goal {
+    text-align: left;
+  }
+
+  /* The palette moves below the canvas rather than beside it; a 268px column
+     next to a canvas does not fit a phone. */
+  .grid {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .stage {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .canvasWrap {
+    height: 320px;
+    flex: 0 0 320px;
+  }
+
+  .meters {
+    margin-left: 0;
+    gap: 16px;
+  }
+
+  .palette {
+    overflow-y: visible;
+  }
+
+  .narrowNote {
+    display: block;
+    padding: 10px 20px;
+    background: var(--panel2);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--sans);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--dim);
+  }
+}

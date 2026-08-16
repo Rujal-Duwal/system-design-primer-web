@@ -1,0 +1,179 @@
+/* --- availability calculator --------------------------------------------- */
+
+.calcRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.fieldLabel {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.number {
+  width: 120px;
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
+}
+.number:focus {
+  outline: none;
+  border-color: var(--accent-line);
+}
+
+.tabs {
+  display: flex;
+  margin-left: auto;
+}
+
+.tab {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  padding: 10px 13px;
+  background: transparent;
+  color: var(--dim);
+  border: 1px solid var(--line);
+  border-left: 0;
+  cursor: pointer;
+}
+.tab:first-child {
+  border-left: 1px solid var(--line);
+}
+.tab:hover {
+  color: var(--accent);
+}
+.tabActive {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.formula {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-left: 2px solid var(--accent);
+  padding: 11px 14px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.calcOut {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.outLabel {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 9px;
+}
+
+.outBig {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+
+.outNote {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--dim);
+  margin-top: 7px;
+}
+
+.downtime {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.downValue {
+  color: var(--fg);
+}
+
+/* --- latency chart -------------------------------------------------------- */
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chartRow {
+  display: grid;
+  grid-template-columns: 236px 1fr 96px;
+  gap: 14px;
+  align-items: center;
+}
+
+.chartLabel {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.chartTrack {
+  height: 7px;
+  background: var(--panel2);
+  min-width: 40px;
+}
+
+.chartBar {
+  height: 7px;
+  background: var(--accent);
+}
+
+.chartValue {
+  font-size: 11.5px;
+  text-align: right;
+  color: var(--fg);
+}
+
+@media (max-width: 900px) {
+  .calcOut {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    margin-left: 0;
+  }
+  .chartRow {
+    grid-template-columns: 1fr 64px;
+    grid-template-areas:
+      "label value"
+      "track track";
+    gap: 4px 10px;
+  }
+  .chartLabel {
+    grid-area: label;
+  }
+  .chartValue {
+    grid-area: value;
+  }
+  .chartTrack {
+    grid-area: track;
+    margin-bottom: 6px;
+  }
+}

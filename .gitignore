@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+.env*.local
+.vercel
+.cache/
+shot.tmp.mjs
+*.tmp.mjs
+
+# Local working material, not part of the published project.
+_local/

@@ -1,0 +1,181 @@
+{
+ "reference": [
+  {
+   "key": "perf",
+   "slug": "performance-vs-scalability",
+   "title": "Performance vs scalability",
+   "lede": "A service is scalable if adding resources results in a proportional increase in performance.",
+   "group": "fundamentals"
+  },
+  {
+   "key": "throughput",
+   "slug": "latency-vs-throughput",
+   "title": "Latency vs throughput",
+   "lede": "Latency is the time to perform an action. Throughput is the number of actions per unit of time.",
+   "group": "fundamentals"
+  },
+  {
+   "key": "cap",
+   "slug": "cap-theorem",
+   "title": "CAP theorem",
+   "lede": "Pick two. Networks fail, so partition tolerance isn't the one you drop.",
+   "group": "fundamentals"
+  },
+  {
+   "key": "consistency",
+   "slug": "consistency-patterns",
+   "title": "Consistency patterns",
+   "lede": "With multiple copies of the same data, decide how they agree — and how long agreement takes.",
+   "group": "fundamentals"
+  },
+  {
+   "key": "availability",
+   "slug": "availability-patterns",
+   "title": "Availability patterns",
+   "lede": "Two complementary patterns support high availability: fail-over and replication.",
+   "group": "fundamentals"
+  },
+  {
+   "key": "dns",
+   "slug": "domain-name-system",
+   "title": "Domain name system",
+   "lede": "Translates a domain name to an IP address — a hierarchical, heavily cached lookup before any request is made.",
+   "group": "getting there"
+  },
+  {
+   "key": "cdn",
+   "slug": "content-delivery-network",
+   "title": "Content delivery network",
+   "lede": "A globally distributed network of proxy servers, serving content from locations closer to the user.",
+   "group": "getting there"
+  },
+  {
+   "key": "lb",
+   "slug": "load-balancer",
+   "title": "Load balancer",
+   "lede": "Distribute requests across resources so no single one is a bottleneck or a single point of failure.",
+   "group": "getting there"
+  },
+  {
+   "key": "proxy",
+   "slug": "reverse-proxy",
+   "title": "Reverse proxy",
+   "lede": "A single web server front that makes internal services look like one origin.",
+   "group": "getting there"
+  },
+  {
+   "key": "app",
+   "slug": "application-layer",
+   "title": "Application layer",
+   "lede": "Separate the web layer from the application layer so each scales — and fails — independently.",
+   "group": "the application"
+  },
+  {
+   "key": "async",
+   "slug": "asynchronism",
+   "title": "Asynchronism",
+   "lede": "Move expensive work out of the request path.",
+   "group": "the application"
+  },
+  {
+   "key": "comm",
+   "slug": "communication",
+   "title": "Communication",
+   "lede": "TCP, UDP, RPC and REST — four different bargains between guarantees and speed.",
+   "group": "the application"
+  },
+  {
+   "key": "cache",
+   "slug": "cache",
+   "title": "Cache",
+   "lede": "Absorb hot reads close to the caller. Pay in staleness and invalidation.",
+   "group": "the data"
+  },
+  {
+   "key": "db",
+   "slug": "scaling-a-relational-database",
+   "title": "Scaling a relational database",
+   "lede": "Five levers, five different bills.",
+   "group": "the data"
+  },
+  {
+   "key": "nosql",
+   "slug": "nosql",
+   "title": "NoSQL",
+   "lede": "A collection of data items represented in a key-value store, document store, wide column store, or graph database.",
+   "group": "the data"
+  },
+  {
+   "key": "sqlnosql",
+   "slug": "sql-or-nosql",
+   "title": "SQL or NoSQL",
+   "lede": "Structured data with transactions, or unstructured data at scale. Pick on the shape of the reads.",
+   "group": "the data"
+  },
+  {
+   "key": "approach",
+   "slug": "how-to-approach-the-question",
+   "title": "How to approach the question",
+   "lede": "Four steps: outline the use cases, sketch a high level design, design core components, then scale it.",
+   "group": "in the room"
+  },
+  {
+   "key": "estimate",
+   "slug": "back-of-the-envelope-estimation",
+   "title": "Back-of-the-envelope estimation",
+   "lede": "Powers of two, latency numbers, and a willingness to round hard.",
+   "group": "in the room"
+  },
+  {
+   "key": "latency",
+   "slug": "latency-numbers",
+   "title": "Latency numbers",
+   "lede": "Each step is roughly ten times the last. This is why memory beats disk and why the round trip is the enemy.",
+   "group": "in the room"
+  },
+  {
+   "key": "security",
+   "slug": "security",
+   "title": "Security",
+   "lede": "Encrypt in transit and at rest, sanitize input, and grant the least privilege that works.",
+   "group": "in the room"
+  }
+ ],
+ "exercises": [
+  {
+   "key": "pastebin",
+   "slug": "pastebin",
+   "title": "Pastebin"
+  },
+  {
+   "key": "twitter",
+   "slug": "twitter-timeline",
+   "title": "Twitter timeline and search"
+  },
+  {
+   "key": "crawler",
+   "slug": "web-crawler",
+   "title": "Web crawler"
+  },
+  {
+   "key": "mint",
+   "slug": "mint",
+   "title": "Mint.com"
+  },
+  {
+   "key": "salesrank",
+   "slug": "sales-rank",
+   "title": "Amazon sales rank"
+  },
+  {
+   "key": "datastore",
+   "slug": "key-value-store",
+   "title": "Key-value store"
+  },
+  {
+   "key": "aws",
+   "slug": "scaling-on-aws",
+   "title": "Scaling to millions on AWS"
+  }
+ ]
+}

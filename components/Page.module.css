@@ -1,0 +1,200 @@
+.scroll {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.column {
+  padding: 44px 44px 60px;
+  max-width: 760px;
+}
+
+.wide {
+  max-width: 800px;
+}
+
+.kicker {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 14px;
+}
+
+.title {
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  line-height: 1.15;
+}
+
+/* The authored half of the page. Marked as ours, visibly, because the rest of
+   the page is not ours. */
+.summary {
+  border-left: 2px solid var(--accent);
+  background: var(--accent-bg);
+  padding: 18px 20px;
+  margin-bottom: 38px;
+}
+
+.summaryLabel {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.lede {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--fg);
+}
+
+.rows {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 158px 1fr;
+  gap: 20px;
+  padding: 11px 0;
+  border-top: 1px solid var(--accent-line);
+}
+
+.rowKey {
+  font-size: 11.5px;
+  color: var(--accent);
+}
+
+.rowVal {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.sectionRule {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 26px;
+}
+
+.sectionRuleLabel {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.syncBadge {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+}
+
+.syncBadgeOk {
+  color: var(--accent);
+}
+
+.sourceStrip {
+  margin-top: 36px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 6px 18px;
+  font-size: 10.5px;
+  color: var(--dim);
+}
+
+.sourceKey {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sourceVal {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.footerRow {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.quietLink {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+}
+.quietLink:hover {
+  color: var(--accent);
+}
+
+.simButton {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  border: 1px solid var(--accent-line);
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+  font-family: var(--mono);
+}
+.simButton:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.widget {
+  margin-top: 34px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 24px 26px;
+}
+
+.widgetLabel {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 18px;
+}
+
+@media (max-width: 900px) {
+  .column {
+    padding: 28px 20px 56px;
+    max-width: none;
+  }
+  .row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .sourceStrip {
+    grid-template-columns: 1fr;
+    gap: 2px 0;
+  }
+  .sourceKey {
+    margin-top: 8px;
+  }
+  .title {
+    font-size: 23px;
+  }
+}

@@ -1,0 +1,57 @@
+This repository contains two kinds of material under two different licences.
+Please read both sections.
+
+================================================================================
+1. CONTENT — Creative Commons Attribution 4.0 International (CC BY 4.0)
+================================================================================
+
+The system design material in this repository is not original to it. It is
+reused from:
+
+    donnemartin/system-design-primer
+    https://github.com/donnemartin/system-design-primer
+    Copyright 2017 Donne Martin
+    Licensed under CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+
+This applies to:
+
+    content/generated/**      section and exercise text, rebuilt from upstream
+    public/primer-images/**   diagrams, vendored from upstream
+    content/authored/**       summaries and exercises written for this site,
+                              which are derived from and describe the above
+
+These files remain under CC BY 4.0. If you reuse them, you must give
+appropriate credit to Donne Martin and the system design primer, provide a link
+to the licence, and indicate if changes were made.
+
+This project is an unofficial companion. It is not affiliated with, endorsed
+by, or maintained by the authors of the system design primer.
+
+================================================================================
+2. CODE — MIT
+================================================================================
+
+Everything else — the application, the content sync, the simulation engine, the
+build tooling and the tests — is licensed as follows.
+
+MIT License
+
+Copyright (c) 2026 Rujal Duwal
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

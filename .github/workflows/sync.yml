@@ -1,0 +1,57 @@
+name: sync content from the primer
+
+# The whole premise of this site is that it cannot drift from the README it
+# credits. That only stays true if something re-fetches it — weekly, and on
+# demand when a contributor lands a change worth picking up straight away.
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Fetch and rebuild content
+        run: npm run sync
+
+      # A section whose anchor moved upstream must surface as a failure, not as
+      # a page that quietly went blank. `npm run sync` already exits non-zero on
+      # a broken mapping; this proves the site still builds from the result.
+      - name: Verify the build still works
+        run: |
+          npm run typecheck
+          npm run verify:levels
+          npm run build
+
+      - name: Open a pull request if anything changed
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: "content: sync from donnemartin/system-design-primer"
+          branch: content/sync
+          delete-branch: true
+          title: "Sync content from the primer"
+          body: |
+            Automated re-fetch of the upstream README and solution files.
+
+            Review the diff for anything that reads oddly — a heading rename
+            upstream can change where a section starts or stops. The sync fails
+            loudly on a missing anchor, so an empty diff means nothing changed
+            and a red run means the mapping in `content/authored/sections.mjs`
+            needs updating.
+          add-paths: |
+            content/generated
+            public/primer-images

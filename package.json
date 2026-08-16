@@ -1,0 +1,37 @@
+{
+  "name": "system-design-primer-web",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "description": "The system design primer as an interactive site \u2014 simulations, reference, exercises.",
+  "scripts": {
+    "sync": "node scripts/sync.mjs",
+    "verify:levels": "node scripts/verify-levels.mjs",
+    "verify": "npm run typecheck && npm run verify:levels",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "npx serve out",
+    "smoke": "node scripts/smoke.mjs",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mlc-ai/web-llm": "^0.2.84",
+    "next": "^16.3.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "esbuild": "^0.28.2",
+    "mdast-util-from-markdown": "^2.0.2",
+    "mdast-util-gfm": "^3.0.0",
+    "micromark-extension-gfm": "^3.0.0",
+    "playwright": "^1.62.1",
+    "typescript": "^5.7.2"
+  }
+}

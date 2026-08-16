@@ -1,0 +1,196 @@
+.statement {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 42em;
+}
+
+.constraints {
+  margin-top: 30px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 20px 22px;
+}
+
+.constraintsLabel {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 14px;
+}
+
+.constraintsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.constraint {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 8px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.bullet {
+  color: var(--accent);
+  font-family: var(--mono);
+}
+
+.rule {
+  margin-top: 34px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.toggleAll {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  color: var(--dim);
+  cursor: pointer;
+  font-family: var(--mono);
+  flex: 0 0 auto;
+}
+.toggleAll:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.step {
+  border-bottom: 1px solid var(--line);
+}
+
+.stepHead {
+  font-family: var(--mono);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--muted);
+  text-align: left;
+}
+.stepHead:hover {
+  color: var(--fg);
+}
+.stepHeadOpen {
+  color: var(--fg);
+}
+
+.stepLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  min-width: 0;
+}
+
+.stepNum {
+  font-size: 10px;
+  color: var(--dim);
+  flex: 0 0 auto;
+}
+
+.stepHead span:not(.stepNum) {
+  font-size: 12.5px;
+}
+
+.markOpen,
+.markClosed {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+}
+.markOpen {
+  color: var(--dim);
+}
+.markClosed {
+  color: var(--accent);
+}
+
+.stepBody {
+  padding: 0 0 28px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.stepSummary {
+  border-left: 2px solid var(--accent);
+  background: var(--accent-bg);
+  padding: 16px 18px;
+}
+
+.stepLede {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--fg);
+  margin: 0 0 10px;
+  max-width: 40em;
+}
+.stepLede:last-of-type {
+  margin-bottom: 0;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.chip {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  padding: 7px 10px;
+  border: 1px solid var(--accent-line);
+  background: var(--panel);
+  color: var(--dim);
+  cursor: pointer;
+}
+.chip:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.stepRule {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (max-width: 900px) {
+  .constraintsGrid {
+    grid-template-columns: 1fr;
+  }
+  .stepBody {
+    padding-left: 0;
+  }
+}
