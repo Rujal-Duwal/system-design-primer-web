@@ -35,7 +35,14 @@ So every page is split visibly, and the split is the point:
 
 The sync never touches the authored half: section keys, slugs, groups, summary panels, the simulation definitions, the availability calculator, or the latency chart. Those live in `content/authored/`.
 
-A scheduled workflow re-runs the sync weekly and opens a pull request when upstream has changed.
+Refreshing is **manual**, by design: run `npm run sync` locally, or trigger the
+*sync content from the primer* workflow, which rebuilds in a clean environment,
+verifies the build, and pushes a branch to review if anything actually changed.
+`meta.json` carries a hash of the emitted content, so an unchanged upstream is a
+true no-op rather than a timestamp bump.
+
+The trade-off is real and worth naming: between runs this site can fall behind
+the README it rebuilds from. Every page shows the date it was last synced.
 
 ## Running it
 

@@ -18,6 +18,15 @@ The sync **must never** overwrite: section keys, slugs, groups, summary panels (
 
 A mapped anchor that disappears upstream **fails the build on purpose**. Do not "fix" that by making it warn instead — a section silently vanishing is the failure mode the loud exit exists to prevent.
 
+Refreshing is manual — `npm run sync`, or the *sync content from the primer*
+workflow, which pushes a branch to review. There is no schedule; that was turned
+off deliberately, so do not add one back without asking.
+
+`meta.json` holds a hash of the emitted content and `syncedAt` only moves when
+that hash moves. Do not stamp the time unconditionally: doing so made every run
+produce a diff, and the scheduled job pushed a branch containing nothing but a
+new timestamp.
+
 ## Node
 
 **Node 24** (Krypton, the current Active LTS) — pinned in `.nvmrc`, `engines`, both

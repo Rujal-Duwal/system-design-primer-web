@@ -53,8 +53,9 @@ section"*. The sync never touches the authored half.
 
 - The site cannot silently drift from the repo it credits, which is what makes it
   defensible to the upstream maintainer.
-- Content is current as of the last build, not the last page view. A weekly
-  GitHub Action opens a PR when upstream changes, so the lag is bounded.
+- Content is current as of the last sync, not the last page view. Refreshing is
+  manual (see the note below), so the lag is bounded only by how often someone
+  runs it. Each page shows its sync date rather than implying freshness.
 - An upstream heading rename **breaks the build**. This is intended: the
   alternative is a page that quietly renders empty. It does mean upstream churn
   can block a deploy until the mapping is updated.
@@ -64,3 +65,17 @@ section"*. The sync never touches the authored half.
   content changes show up as reviewable diffs.
 - The authored/upstream split must stay visible in the UI. Collapsing it would
   make the site's claims about provenance untrue.
+
+## Note — 2026-08-17
+
+The scheduled weekly run was removed. It had been opening a pull request on
+every run regardless of whether upstream changed, because `syncedAt` was stamped
+unconditionally and so always produced a diff; that is fixed by hashing the
+emitted content. Creating pull requests from Actions also requires a repository
+setting that is deliberately left off here.
+
+Syncing is now on demand: `npm run sync`, or the workflow, which verifies the
+build and pushes a branch to review. The cost is accepted: content can lag
+upstream between runs. The guarantee that survives is the one that mattered
+most — when a sync does run, it either reproduces upstream faithfully or fails
+loudly.

@@ -1,16 +1,17 @@
 name: sync content from the primer
 
-# The whole premise of this site is that it cannot drift from the README it
-# credits. That only stays true if something re-fetches it — weekly, and on
-# demand when a contributor lands a change worth picking up straight away.
+# Run on demand only. There is deliberately no schedule: content refreshes
+# happen when someone asks for one.
+#
+# The trade-off is worth stating plainly — between runs, this site can fall
+# behind the README it rebuilds from. What the sync still refuses to do is
+# paper over a real break: a mapped anchor that disappears upstream fails the
+# run rather than quietly dropping a section.
 on:
-  schedule:
-    - cron: "17 6 * * 1"
   workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   sync:
@@ -37,21 +38,38 @@ jobs:
           npm run verify:levels
           npm run build
 
-      - name: Open a pull request if anything changed
-        uses: peter-evans/create-pull-request@v8
-        with:
-          commit-message: "content: sync from donnemartin/system-design-primer"
-          branch: content/sync
-          delete-branch: true
-          title: "Sync content from the primer"
-          body: |
-            Automated re-fetch of the upstream README and solution files.
+      - name: Push a branch if anything changed
+        run: |
+          # syncedAt only moves when the content hash moves, so an unchanged
+          # upstream really is an empty diff here rather than a timestamp bump.
+          if [ -z "$(git status --porcelain content/generated public/primer-images)" ]; then
+            echo "Upstream is unchanged — nothing to do."
+            {
+              echo "### Upstream unchanged"
+              echo ""
+              echo "The primer has not changed since the last sync. No branch pushed."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
 
-            Review the diff for anything that reads oddly — a heading rename
-            upstream can change where a section starts or stops. The sync fails
-            loudly on a missing anchor, so an empty diff means nothing changed
-            and a red run means the mapping in `content/authored/sections.mjs`
-            needs updating.
-          add-paths: |
-            content/generated
-            public/primer-images
+          BRANCH="content/sync-$(date +%Y%m%d-%H%M%S)"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add content/generated public/primer-images
+          git commit -m "content: sync from donnemartin/system-design-primer"
+          git push origin "$BRANCH"
+
+          # A branch rather than a pull request: opening one from Actions needs
+          # "Allow GitHub Actions to create and approve pull requests", which is
+          # off for this repo by choice. Opening it by hand is one click.
+          {
+            echo "### Upstream changed"
+            echo ""
+            echo "Pushed \`$BRANCH\`. Review and open a pull request:"
+            echo ""
+            echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/main...${BRANCH}?expand=1"
+            echo ""
+            echo "Read the diff for anything that renders oddly — a heading rename"
+            echo "upstream can move where a section starts or stops."
+          } >> "$GITHUB_STEP_SUMMARY"
