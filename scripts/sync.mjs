@@ -22,6 +22,7 @@
 
 import { mkdir, readFile, writeFile, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -711,18 +712,6 @@ async function main() {
 
   /* ---- write ---- */
   await mkdir(OUT, { recursive: true });
-  const syncedAt = new Date().toISOString();
-  const meta = {
-    syncedAt,
-    repo: SOURCE.repo,
-    branch: SOURCE.branch,
-    licence: SOURCE.licence,
-    sections: Object.keys(reference).length,
-    exercises: Object.keys(exercises).length,
-    images: img.total,
-    problems,
-    unresolvedAnchors: [...unresolved].sort(),
-  };
 
   /**
    * A tiny index for the sidebar, the exercise chips and the debrief links.
@@ -745,6 +734,43 @@ async function main() {
       slug: ex.slug,
       title: ex.title,
     })),
+  };
+
+  /**
+   * Only move the timestamp when the content actually moved.
+   *
+   * Stamping every run made the sync produce a diff even when upstream was
+   * byte-identical, so the scheduled job opened a pull request every week
+   * containing nothing but a new `syncedAt`. Hashing what we emit means an
+   * unchanged upstream is a genuine no-op, and a PR appearing again means
+   * something really did change.
+   */
+  const contentHash = createHash("sha256")
+    .update(JSON.stringify({ reference, exercises, nav }))
+    .digest("hex")
+    .slice(0, 16);
+
+  let syncedAt = new Date().toISOString();
+  try {
+    const previous = JSON.parse(await readFile(join(OUT, "meta.json"), "utf8"));
+    if (previous.contentHash === contentHash && previous.syncedAt) {
+      syncedAt = previous.syncedAt;
+    }
+  } catch {
+    /* no previous run to compare against */
+  }
+
+  const meta = {
+    syncedAt,
+    contentHash,
+    repo: SOURCE.repo,
+    branch: SOURCE.branch,
+    licence: SOURCE.licence,
+    sections: Object.keys(reference).length,
+    exercises: Object.keys(exercises).length,
+    images: img.total,
+    problems,
+    unresolvedAnchors: [...unresolved].sort(),
   };
 
   await writeFile(join(OUT, "nav.json"), JSON.stringify(nav, null, 1));
