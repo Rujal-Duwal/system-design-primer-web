@@ -70,26 +70,10 @@ npm run smoke     # browser tests against out/ (run build first)
 
 All three run in CI on every push and pull request.
 
-## Layout
+## Architecture
 
-```
-content/
-  authored/     summaries, simulations, latency figures, section mapping — hand-written
-  generated/    sync output — committed so the site builds without network
-  index.ts      full content, for pages that render bodies
-  nav.ts        titles and slugs only, for client components
-scripts/
-  sync.mjs           fetch → parse → map → emit
-  verify-levels.mjs  simulation tuning check
-  smoke.mjs          browser smoke test
-  a11y.mjs           WCAG 2.2 AA audit
-lib/
-  sim/engine.ts  the simulation — plain class, mutable refs, rAF
-  search.ts      lexical index, shared by search and LLM retrieval
-  llm/           WebLLM in a worker
-app/             reference/[slug], exercise/[slug], simulate/[slug]
-docs/adr/        why things are the way they are
-```
+The tech stack, the directory layout, and a diagram of how a page actually gets
+from the primer's README to a reader's browser: [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 ## Design notes
 

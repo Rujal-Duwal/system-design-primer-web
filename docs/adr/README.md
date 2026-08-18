@@ -1,7 +1,10 @@
 # Architecture decision records
 
 Short records of decisions that were not obvious, written so that someone
-changing them later knows what they are trading away.
+changing them later knows what they are trading away. For the stack, the
+directory layout, and how the pieces fit together, see
+[`ARCHITECTURE.md`](../../ARCHITECTURE.md) — that document links back into
+these where a choice needs justifying.
 
 Format: Context → Decision → Consequences. A record is immutable once accepted;
 if a decision is reversed, add a new record that supersedes it rather than

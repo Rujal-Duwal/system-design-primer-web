@@ -61,27 +61,12 @@ that are easy to undo by accident:
   panel edges use `--line`; anything whose border is what makes it read as a
   control uses `--control-line`, which clears 3:1 for 1.4.11.
 
-## Layout
+## Architecture
 
-```
-content/
-  authored/     hand-written: summaries, simulations, latency figures, section mapping
-  generated/    sync output — committed, never hand-edited
-  index.ts      full content (bodies) — server components only
-  nav.ts        titles/slugs only — for client components
-scripts/
-  sync.mjs           fetch → parse → map → emit
-  verify-levels.mjs  headless simulation tuning check
-  smoke.mjs          Playwright smoke test
-  a11y.mjs           WCAG 2.2 AA audit
-  sim-harness.mjs    bundles the TS engine for Node
-lib/
-  sim/engine.ts  the simulation — plain class, mutable refs, rAF
-  search.ts      lexical index, shared by search and LLM retrieval
-  llm/           WebLLM in a worker
-app/             reference/[slug], exercise/[slug], simulate/[slug]
-docs/adr/        architecture decision records — read before large changes
-```
+Stack, directory layout, and the build-time vs. runtime data flow (with a
+diagram) are in [`ARCHITECTURE.md`](ARCHITECTURE.md) — read it before a change
+that touches more than one file. `docs/adr/` has the reasoning behind each
+non-obvious choice referenced from there.
 
 ## Things that will bite you
 
